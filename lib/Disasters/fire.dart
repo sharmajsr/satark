@@ -307,7 +307,8 @@ class _FireState extends State<Fire> {
                     "people": "$people",
                     "areaType":l,
                    "id":"$id",
-                    "images":imList
+                   "alertIssued":"false"
+                 //   "images":imList
                   };
 
                     print("\n\n $data \n\n");

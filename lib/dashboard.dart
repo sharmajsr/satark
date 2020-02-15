@@ -1,4 +1,6 @@
+import 'package:disaster_main/Authority/authority.dart';
 import 'package:disaster_main/Disasters/fire.dart';
+import 'package:disaster_main/Disasters/map.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -31,11 +33,17 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              myCard(context,'Animal'),
-              myCard(context,'ETC'),
+              InkWell(onTap:(){
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyMap()),
+              );},child: myCard(context,'Animal')),
+              InkWell(onTap:(){Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Authority()),
+              );},child: myCard(context,'ETC')),
             ],
-          ),
-        ],
+          )],
       ),
     );
   }
