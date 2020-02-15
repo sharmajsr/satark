@@ -15,6 +15,9 @@ final FirebaseDatabase database = FirebaseDatabase.instance;
 
 class _FireState extends State<Fire> {
   String url;
+  String url1;
+  String url2;
+  String people;
   double val = 0.0;
   bool lowPeople = false;
   bool mediumPeople = false;
@@ -234,53 +237,6 @@ class _FireState extends State<Fire> {
               // crossAxisAlignment: CrossAxisAlignment.,
               //mainAxisAlignment: MainAxisAlignment.satr,
               children: <Widget>[
-//                FlatButton(
-//                  onPressed: () {
-//                    getImageCamera();
-//                  },
-//                  child: sampleImage == null
-//                      ?  Container(
-//                    width: 60,
-//                    height: 60,
-//                    color: Colors.blue,
-//                    child: Center(child: Icon(Icons.add)),
-//                  )
-//                      : uploadPicture()
-//                ),
-//                RaisedButton(
-//                  onPressed: () {
-//                    getImageCamera();
-//                  },
-//                  child: sampleImage == null
-//                      ?  Container(
-//                    width: 60,
-//                    height: 60,
-//                    color: Colors.blue,
-//                    child: Center(child: Icon(Icons.add)),
-//                  )
-//                      : uploadPicture(),
-//                ),
-//                InkWell(
-//                  onTap: getImageCamera,
-//                  child: Container(
-//                    width: 60,
-//                    height: 60,
-//                    color: Colors.blue,
-//                    child: Center(child: Icon(Icons.add)),
-//                  ),
-//                ),RaisedButton(
-//                  onPressed: () {
-//                    getImageCamera();
-//                  },
-//                  child: sampleImage == null
-//                      ?  Container(
-//                    width: 60,
-//                    height: 60,
-//                    color: Colors.blue,
-//                    child: Center(child: Icon(Icons.add)),
-//                  )
-//                      : uploadPicture()
-//                ),
                 FlatButton(
                     onPressed: () {
                       getImageCamera();
@@ -323,12 +279,41 @@ class _FireState extends State<Fire> {
               padding: const EdgeInsets.only(top: 8.0),
               child: FlatButton(
                 color: Colors.grey,
-                onPressed: () {
-                  Map data = {
+                onPressed: () async {
+                  print(sampleImage.toString());
+                 if(sampleImage!= null)  var sUrl  = await uploadImage();
+
+//                 if(sampleImage1!=null) var sUrl1 = await uploadImage1();
+//                 if(sampleImage2!=null)  var sUrl2 = await uploadImage2();
+
+                 if(lowPeople) people ="low People";
+                 else if(mediumPeople) people ="medium People";
+                 else if(largePeople) people ="large People";
+                 else people="unknown";
+                 List l=  ['$areaType1','$areaType2','$areaType3','$areaType4','$areaType5'];
+                 List imList;
+//                 if(areaType1)  l.add('1');
+//                 if(areaType2)  l.add('2');
+//                 if(areaType3)  l.add('3');
+//                 if(areaType4)  l.add('4');
+//                 if(areaType5)  l.add('5');
+//                 if(sUrl.isNotEmpty) imList.add(sUrl);
+//                 if(sUrl1.isNotEmpty) imList.add(sUrl1);
+//                 if(sUrl2.isNotEmpty) imList.add(sUrl2);
+                  var id= randomAlphaNumeric(6);
+                 Map data = {
                     "name": "shubham",
+                    "sever":"$val",
+                    "people": "$people",
+                    "areaType":l,
+                   "id":"$id",
+                    "images":imList
                   };
 
-                  database.reference().child("complaints/" + 'name/').set(data);
+                    print("\n\n $data \n\n");
+                  database.reference().child("complaints/" + '$id').set(data).catchError((e){
+                    print('ERROR ho gya $e\n\n');
+                  });
                 },
                 child: Text('Push Me'),
               ),
@@ -377,48 +362,6 @@ class _FireState extends State<Fire> {
       filename = sampleImage2.toString();
     });
   }
-
-//  _showChoiceDialog() {
-//    showDialog(
-//        context: context,
-//        builder: (BuildContext context) {
-//          return AlertDialog(
-//              title: Text('Choose'),
-//              content: SingleChildScrollView(
-//                child: Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                  children: <Widget>[
-//                    RaisedButton(
-//                        elevation: 8.0,
-//                        onPressed: () {
-//                          getImageCamera();
-//                          Navigator.of(context).pop();
-//                        },
-//                        child: Text('Camera')),
-//                    RaisedButton(
-//                        elevation: 8.0,
-//                        onPressed: () {
-//                          getImageGallery();
-//                          Navigator.of(context).pop();
-//                        },
-//                        child: Text('Gallery')),
-//                  ],
-//                ),
-//              ));
-//        });
-//  }
-//  Future getImageGallery() async {
-//    var tempImage = await ImagePicker.pickImage(
-//      source: ImageSource.gallery,
-//      imageQuality: 40,
-//    );
-//    setState(() {
-////        if(sampleImage==null)
-////           sampleImage= File("assets/image_02.png");
-//      sampleImage = tempImage;
-//      filename = sampleImage.toString();
-//    });
-//  }
 
   Widget uploadPicture() {
     return Container(
@@ -486,5 +429,27 @@ class _FireState extends State<Fire> {
     url = downUrl.toString();
     //print('Download Url $url');
     return url;
+  }
+  Future<String> uploadImage1() async {
+    // print('\n\n$filename\n\n');
+    random = randomAlphaNumeric(6);
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('$random');
+    final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage1);
+    var downUrl = await (await task.onComplete).ref.getDownloadURL();
+    url1 = downUrl.toString();
+    //print('Download Url $url');
+    return url1;
+  }
+  Future<String> uploadImage2() async {
+    // print('\n\n$filename\n\n');
+    random = randomAlphaNumeric(6);
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('$random');
+    final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage2);
+    var downUrl = await (await task.onComplete).ref.getDownloadURL();
+    url2 = downUrl.toString();
+    //print('Download Url $url');
+    return url2;
   }
 }
