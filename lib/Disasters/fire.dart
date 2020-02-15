@@ -1,4 +1,8 @@
 import 'dart:io';
+
+import 'package:disaster_main/messaging/message.dart';
+import 'package:disaster_main/messaging/messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,6 +18,8 @@ class Fire extends StatefulWidget {
 final FirebaseDatabase database = FirebaseDatabase.instance;
 
 class _FireState extends State<Fire> {
+
+  final FirebaseMessaging _firebaseMessaging =FirebaseMessaging();
   String url;
   String url1;
   String url2;
@@ -31,6 +37,51 @@ class _FireState extends State<Fire> {
   File sampleImage, sampleImage2, sampleImage1;
   String filename;
   String random;
+  String subscriber="local";
+  String deviceToken;
+  final List<Message> messages = [];
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.getToken().then((token){
+      deviceToken=token;
+      print('\n\nToken'+token);
+    });
+    _firebaseMessaging.configure(
+
+      onMessage : (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        final notification = message['notification'];
+        setState(() {
+          messages.add(Message(
+              title: notification['title'], body: notification['body']));
+        });
+      },
+
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+
+        final notification = message['data'];
+        setState(() {
+          messages.add(Message(
+            title: '${notification['title']}',
+            body: '${notification['body']}',
+          ));
+        });
+      },
+
+      onResume : (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+//    _firebaseMessaging.requestNotificationPermissions(
+//        const IosNotificationSettings(sound: true, badge: true, alert: true));
+  }
+
+  Widget buildMessage(Message message) => ListTile(
+    title: Text(message.title),
+    subtitle: Text(message.body),
+  );
 
   //int height4= MediaQuery.of(context).size.height;
   @override
@@ -314,6 +365,10 @@ class _FireState extends State<Fire> {
                     print("\n\n $data \n\n");
                   database.reference().child("complaints/" + '$id').set(data).catchError((e){
                     print('ERROR ho gya $e\n\n');
+                  });
+                  //Messaging.sendToTopic(title: 'news', body: '$Fire ', topic: 'news');
+                  Messaging.sendToTopic(title: 'Fire News', body: 'Unverified Fire Alert',topic: subscriber).then((val){
+                    print('Subscribed to $subscriber');
                   });
                 },
                 child: Text('Push Me'),

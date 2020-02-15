@@ -1,3 +1,4 @@
+import 'package:disaster_main/messaging/messaging.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -117,6 +118,9 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                     .child("complaints/" + widget.id)
                                     .set(data);
                                 widget.alertIssued = 'true';
+                                Messaging.sendToTopic(title: 'Fire News', body: 'Verified Fire Alert',topic: 'local').then((val){
+                                  print('Subscribed to local');
+                                });
                                 setState(() {});
                               },
                             )

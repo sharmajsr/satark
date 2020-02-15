@@ -1,6 +1,7 @@
 import 'package:disaster_main/Authority/authority.dart';
 import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/Disasters/map.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -9,11 +10,38 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  void sendTokenToServer(String fcmToken) {
+    print('Token: $fcmToken');
+  }
+
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+//  void fcmSubscribe() {
+//    firebaseMessaging.subscribeToTopic('local');
+//    print('Subscribed To commond');
+//  }
+
+  String deviceToken;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    firebaseMessaging.getToken().then((token) {
+      deviceToken = token;
+      print('\n\nToken  ' + token);
+    });
+    firebaseMessaging.subscribeToTopic('auth').then((val) {
+      print('Subscribed To commond');
+    });
+    sendTokenToServer(deviceToken);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Auth'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -21,35 +49,46 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              InkWell(child: myCard(context,'Fire'),onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Fire()),
-                );
-              },),
-              myCard(context,'Land Accident'),
+              InkWell(
+                child: myCard(context, 'Fire'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Fire()),
+                  );
+                },
+              ),
+              myCard(context, 'Land Accident'),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              InkWell(onTap:(){
-                Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyMap()),
-              );},child: myCard(context,'Animal')),
-              InkWell(onTap:(){Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Authority()),
-              );},child: myCard(context,'ETC')),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyMap()),
+                    );
+                  },
+                  child: myCard(context, 'Animal')),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Authority()),
+                    );
+                  },
+                  child: myCard(context, 'ETC')),
             ],
-          )],
+          )
+        ],
       ),
     );
   }
 }
 
-Widget myCard(BuildContext context,String type) {
+Widget myCard(BuildContext context, String type) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: Container(
@@ -65,7 +104,7 @@ Widget myCard(BuildContext context,String type) {
                   color: Colors.amber,
                   // height: 100,
                   width: double.infinity,
-                  ),
+                ),
               ),
               Expanded(flex: 2, child: Center(child: Text(type))),
             ],
