@@ -1,3 +1,4 @@
+import 'package:disaster_main/Disasters/fire.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -10,7 +11,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashbaord'),
+        title: Text('Dashboard'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -18,7 +19,12 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              myCard(context,'Fire'),
+              InkWell(child: myCard(context,'Fire'),onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Fire()),
+                );
+              },),
               myCard(context,'Land Accident'),
             ],
           ),
@@ -51,9 +57,7 @@ Widget myCard(BuildContext context,String type) {
                   color: Colors.amber,
                   // height: 100,
                   width: double.infinity,
-                  child: Image.network(
-                      'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'),
-                ),
+                  ),
               ),
               Expanded(flex: 2, child: Center(child: Text(type))),
             ],

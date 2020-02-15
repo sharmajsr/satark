@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "955179317708",
+    "firebase_url": "https://disaster-management-bd2fb.firebaseio.com",
+    "project_id": "disaster-management-bd2fb",
+    "storage_bucket": "disaster-management-bd2fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955179317708:android:8b137eb4ef0b34ab800569",
+        "android_client_info": {
+          "package_name": "com.example.disaster_main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955179317708-cbsni2ub9pemgauap5a31nqntddcc4mu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR6ZmTCCaXeHPXmMQtwJU3cwIR0c_6zcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955179317708-cbsni2ub9pemgauap5a31nqntddcc4mu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
