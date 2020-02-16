@@ -1,15 +1,42 @@
 import 'dart:async';
-
-import 'package:disaster_main/Disasters/MarkerMap.dart';
-import 'package:disaster_main/dashboard.dart';
-import 'package:disaster_main/loginpage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-String mytoken;
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+
+//
+//class MapSample extends StatefulWidget {
+//  @override
+//  State<MapSample> createState() => MapSampleState();
+//}
+//
+//class MapSampleState extends State<MapSample> {
+//  Completer<GoogleMapController> _controller = Completer();
+//
+//  static final CameraPosition _kGooglePlex = CameraPosition(
+//    target: LatLng(37.42796133580664, -122.085749655962),
+//    zoom: 14.4746,
+//  );
+//
+//
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return new Scaffold(
+//      body: GoogleMap(
+//        mapType: MapType.hybrid,
+//        initialCameraPosition: _kGooglePlex,
+//        onMapCreated: (GoogleMapController controller) {
+//          _controller.complete(controller);
+//        },
+//      ),
+//
+//    );
+//  }
+//
+//
+//}
+
+class MyAppe extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
@@ -22,7 +49,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home:  Dashboard(),
+      home:  HomePage(),
     );
   }
 
@@ -49,7 +76,7 @@ class HomePageState extends State<HomePage> {
 
     // TODO: implement initState
     super.initState();
-        type = MapType.normal;
+    type = MapType.normal;
     markers = Set.from([]);
   }
 

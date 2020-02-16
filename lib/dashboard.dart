@@ -1,6 +1,8 @@
 import 'package:disaster_main/Authority/authority.dart';
+import 'package:disaster_main/Disasters/MarkerMap.dart';
 import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/Disasters/map.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +60,14 @@ class _DashboardState extends State<Dashboard> {
                   );
                 },
               ),
-              myCard(context, 'Land Accident'),
+              InkWell(child: myCard(context, 'Land Accident'),
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyAppe()),
+                  );
+                },
+              ),
             ],
           ),
           Row(

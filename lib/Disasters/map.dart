@@ -59,6 +59,8 @@ class _MyMapState extends State<MyMap> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: GoogleMap(
+
+          myLocationButtonEnabled: true,
            compassEnabled: true,
            myLocationEnabled: true,
           mapType: MapType.normal,

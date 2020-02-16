@@ -30,13 +30,14 @@ dependencies:
   google_fonts: ^0.3.9
   firebase_storage:
   location:
-  google_maps_flutter: ^0.5.23+1
+  google_maps_flutter: ^0.5.21
   shimmer:
   flutter_screenutil: ^0.4.2
   firebase_messaging: ^6.0.9
   toast: ^0.1.5
   cloud_firestore: ^0.12.9+5
   firebase_auth: ^0.14.0+2
+
 
 dev_dependencies:
   flutter_test:
