@@ -12,6 +12,7 @@ class MyMap extends StatefulWidget {
 }
 
 class _MyMapState extends State<MyMap> {
+
   String longitude = '78.9629';
   String latitude = '20.5937';
   Completer<GoogleMapController> _controller = Completer();

@@ -11,9 +11,11 @@ class ComplaintDetails extends StatefulWidget {
   String id;
   List areaType;
   String sever;
+  String longitude;
+  String latitude;
 
   ComplaintDetails(this.name, this.severity, this.AreaType, this.people,
-      this.alertIssued, this.id, this.areaType, this.sever);
+      this.alertIssued, this.id, this.areaType, this.sever,this.longitude,this.latitude);
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -92,6 +94,33 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                         'AreaType : ${widget.AreaType}',
                         style: textStyle,
                       ),
+                      Text(
+                        'Latitude : ${widget.latitude}',
+                        style: textStyle,
+                      ),
+                      Text(
+                        'Longitude : ${widget.longitude}',
+                        style: textStyle,
+                      ),
+
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          height: 90,
+                          width:90.0,
+                          child: Image.asset('assets/download.jpg'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 90,
+                            width:90.0,
+                            child: Image.asset('assets/download1.jpg'),
+                          ),
+                        ),
+                      ],
+                    ),
+
 //                      Text(
 //                        'Room : ${widget.room}',
 //                        style: textStyle,
@@ -111,21 +140,24 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                   "people": "${widget.people}",
                                   "areaType": widget.areaType,
                                   "alertIssued": "true",
-                                  "id": "${widget.id}"
+                                  "id": "${widget.id}",
+                                  "latitude":"${widget.latitude}",
+                                  "longitude":"${widget.longitude}"
+
                                 };
                                 database
                                     .reference()
                                     .child("complaints/" + widget.id)
                                     .set(data);
                                 widget.alertIssued = 'true';
-                                Messaging.sendToTopic(title: 'Fire News', body: 'Verified Fire Alert',topic: 'local').then((val){
+                                Messaging.sendToTopic(title: 'Fire News', body: 'Verified Fire Alert',topic: 'auth').then((val){
                                   print('Subscribed to local');
                                 });
                                 setState(() {});
                               },
                             )
                           : RaisedButton(
-                              child: Text('Confirm'),
+                              child: Text('Confirmed'),
                               onPressed: null,
                             )
                     ],

@@ -1,7 +1,9 @@
 import 'package:disaster_main/Authority/send_Notification.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Authority extends StatefulWidget {
@@ -13,11 +15,13 @@ class _AuthorityState extends State<Authority> {
   DatabaseReference databaseReference;
   Map<dynamic, dynamic> data;
   final FirebaseDatabase database = FirebaseDatabase.instance;
-
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
   @override
   void initState() {
     super.initState();
-
+    firebaseMessaging.subscribeToTopic('auth').then((val) {
+      print('Subscribed To commond');
+    });
     //  complaint = Complaints("", "", "", "");
     databaseReference = database.reference();
     // databaseReference.onChildAdded.listen(onDataAdded);
@@ -129,10 +133,10 @@ class _AuthorityState extends State<Authority> {
         ? "High Severity"
         : double.parse(data["sever"]) > 30 ? "Medium Severity" : "Low Severity";
 
+
     str = str + data["areaType"][0] == 'false' ? '' : 'School Area';
 
-    str =
-        str + data["areaType"][1] == 'false' ? '' : 'Electrical Infrastructure';
+    str = str + data["areaType"][1] == 'false' ? '' : 'Electrical Infrastructure';
     str = str + data["areaType"][2] == 'false' ? '' : 'Public Marketplace';
     str = str + data["areaType"][3] == 'false' ? '' : 'Factory';
     str = str + data["areaType"][4] == 'false' ? '' : 'Others';
@@ -145,37 +149,46 @@ class _AuthorityState extends State<Authority> {
                       data['name'],
                       severity,
                       str,
-                      data['people'],data['alertIssued'],data['id'],data['areaType'],data['sever']
+                      data['people'],data['alertIssued'],data['id'],data['areaType'],data['sever'],data['latitude'],data['longitude']
                     )));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text("Severity : $severity "),
-              Text("AreaType : "),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  data["areaType"][0] == 'false'
-                      ? Container()
-                      : Text('School Area'),
-                  data["areaType"][1] == 'false'
-                      ? Container()
-                      : Text('Electrical Infrastructure'),
-                  data["areaType"][2] == 'false'
-                      ? Container()
-                      : Text('Public Marketplace'),
-                  data["areaType"][3] == 'false'
-                      ? Container()
-                      : Text('Factory'),
-                  data["areaType"][4] == 'false' ? Container() : Text('Others'),
-                ],
-              ),
-              Text("People : ${data['people']} "),
-            ],
+elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Severity : $severity ",style: GoogleFonts.lato(fontSize: 15),),
+                Text("Type of Area : ",style: GoogleFonts.lato(fontSize: 15),),
+                Padding(
+                  padding: const EdgeInsets.only(left:70.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      data["areaType"][0] == 'false'
+                          ? Container()
+                          : Text('School Area'),
+                      data["areaType"][1] == 'false'
+                          ? Container()
+                          : Text('Electrical Infrastructure'),
+                      data["areaType"][2] == 'false'
+                          ? Container()
+                          : Text('Public Marketplace'),
+                      data["areaType"][3] == 'false'
+                          ? Container()
+                          : Text('Factory'),
+                      data["areaType"][4] == 'false' ? Container() : Text('Others'),
+                    ],
+                  ),
+                ),
+                Text("How many People : ${data['people'].toString().toLowerCase()} crowd"),
+                Text("Latitude : ${data['latitude']}",style: GoogleFonts.lato(fontSize: 15),),
+                Text("Longitude : ${data['longitude']}",style: GoogleFonts.lato(fontSize: 15),),
+              ],
+            ),
           ),
         ),
       ),

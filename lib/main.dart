@@ -1,6 +1,10 @@
 import 'dart:async';
 
+import 'package:disaster_main/Authority/authority.dart';
+import 'package:disaster_main/CountDown.dart';
 import 'package:disaster_main/Disasters/MarkerMap.dart';
+import 'package:disaster_main/Disasters/fire.dart';
+import 'package:disaster_main/Disasters/map.dart';
 import 'package:disaster_main/dashboard.dart';
 import 'package:disaster_main/loginpage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -22,13 +26,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home:  Dashboard(),
+      home:  Fire(),
     );
   }
 
 }
 
 class HomePage extends StatefulWidget {
+
+
   @override
   State<HomePage> createState() => HomePageState();
 }
@@ -62,9 +68,9 @@ class HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: GoogleMap(
-              myLocationButtonEnabled: true,
+            //  myLocationButtonEnabled: true,
               myLocationEnabled: true,
-              compassEnabled: true,
+           //   compassEnabled: true,
               markers: markers,
               mapType: type,
               onTap: (position){
@@ -83,7 +89,7 @@ class HomePageState extends State<HomePage> {
             ),
           ),
           Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.bottomCenter,
             child: Row(
               children: <Widget>[
                 FloatingActionButton(

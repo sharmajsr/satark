@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:io';
-
+import 'package:disaster_main/CountDown.dart';
+import 'package:disaster_main/main.dart';
+import 'package:flutter/services.dart';
 import 'package:disaster_main/messaging/message.dart';
 import 'package:disaster_main/messaging/messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:random_string/random_string.dart';
 
 class Fire extends StatefulWidget {
@@ -18,8 +22,7 @@ class Fire extends StatefulWidget {
 final FirebaseDatabase database = FirebaseDatabase.instance;
 
 class _FireState extends State<Fire> {
-
-  final FirebaseMessaging _firebaseMessaging =FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String url;
   String url1;
   String url2;
@@ -37,19 +40,54 @@ class _FireState extends State<Fire> {
   File sampleImage, sampleImage2, sampleImage1;
   String filename;
   String random;
-  String subscriber="local";
+  String subscriber = "local";
   String deviceToken;
   final List<Message> messages = [];
+  String longitude = 'nothing yet';
+  String latitude = 'nothing yet';
+
+  void getMyLocationData() async {
+    var currentLocation = LocationData;
+
+    var location = new Location();
+
+// Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      var location = new Location();
+      var currentLocation = await location.getLocation();
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        // error = 'Permission denied';
+      }
+      currentLocation = null;
+    }
+    location.onLocationChanged().listen((LocationData currentLocation) {
+      print(
+          "Latitude : ${currentLocation.latitude}\nLongitude : ${currentLocation.longitude}");
+
+      setState(() {
+        longitude = currentLocation.longitude.toString();
+        latitude = currentLocation.latitude.toString();
+      });
+    });
+  }
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
-    _firebaseMessaging.getToken().then((token){
-      deviceToken=token;
-      print('\n\nToken'+token);
-    });
-    _firebaseMessaging.configure(
+    this.getMyLocationData();
 
-      onMessage : (Map<String, dynamic> message) async {
+    _firebaseMessaging.getToken().then((token) {
+      deviceToken = token;
+      print('\n\nToken' + token);
+    });
+    firebaseMessaging.subscribeToTopic('all').then((val) {
+      print('Subscribed To commond');
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         final notification = message['notification'];
         setState(() {
@@ -57,7 +95,6 @@ class _FireState extends State<Fire> {
               title: notification['title'], body: notification['body']));
         });
       },
-
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
 
@@ -69,8 +106,7 @@ class _FireState extends State<Fire> {
           ));
         });
       },
-
-      onResume : (Map<String, dynamic> message) async {
+      onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
       },
     );
@@ -79,9 +115,9 @@ class _FireState extends State<Fire> {
   }
 
   Widget buildMessage(Message message) => ListTile(
-    title: Text(message.title),
-    subtitle: Text(message.body),
-  );
+        title: Text(message.title),
+        subtitle: Text(message.body),
+      );
 
   //int height4= MediaQuery.of(context).size.height;
   @override
@@ -327,22 +363,46 @@ class _FireState extends State<Fire> {
               ],
             ),
             Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+              child: Text(
+                '5. Location Coordinates ',
+                style: GoogleFonts.lato(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                '  Latitude: $latitude \n  Longitude : $longitude ',
+                style: GoogleFonts.lato(fontSize: 20),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: FlatButton(
                 color: Colors.grey,
                 onPressed: () async {
                   print(sampleImage.toString());
-                 if(sampleImage!= null)  var sUrl  = await uploadImage();
+//                  if (sampleImage != null) var sUrl = await uploadImage();
 
 //                 if(sampleImage1!=null) var sUrl1 = await uploadImage1();
 //                 if(sampleImage2!=null)  var sUrl2 = await uploadImage2();
 
-                 if(lowPeople) people ="low People";
-                 else if(mediumPeople) people ="medium People";
-                 else if(largePeople) people ="large People";
-                 else people="unknown";
-                 List l=  ['$areaType1','$areaType2','$areaType3','$areaType4','$areaType5'];
-                 List imList;
+                  if (lowPeople)
+                    people = "low People";
+                  else if (mediumPeople)
+                    people = "medium People";
+                  else if (largePeople)
+                    people = "large People";
+                  else
+                    people = "unknown";
+                  List l = [
+                    '$areaType1',
+                    '$areaType2',
+                    '$areaType3',
+                    '$areaType4',
+                    '$areaType5'
+                  ];
+                  List imList;
 //                 if(areaType1)  l.add('1');
 //                 if(areaType2)  l.add('2');
 //                 if(areaType3)  l.add('3');
@@ -351,27 +411,42 @@ class _FireState extends State<Fire> {
 //                 if(sUrl.isNotEmpty) imList.add(sUrl);
 //                 if(sUrl1.isNotEmpty) imList.add(sUrl1);
 //                 if(sUrl2.isNotEmpty) imList.add(sUrl2);
-                  var id= randomAlphaNumeric(6);
-                 Map data = {
+                  var id = randomAlphaNumeric(6);
+                  Map data = {
                     "name": "shubham",
-                    "sever":"$val",
+                    "sever": "$val",
                     "people": "$people",
-                    "areaType":l,
-                   "id":"$id",
-                   "alertIssued":"false"
-                 //   "images":imList
+                    "areaType": l,
+                    "id": "$id",
+                    "alertIssued": "false",
+                    "latitude": "${latitude}",
+                    "longitude": "${longitude}"
+                    //   "images":imList
                   };
 
-                    print("\n\n $data \n\n");
-                  database.reference().child("complaints/" + '$id').set(data).catchError((e){
+                  print("\n\n $data \n\n");
+                  database
+                      .reference()
+                      .child("complaints/" + '$id')
+                      .set(data)
+                      .catchError((e) {
                     print('ERROR ho gya $e\n\n');
                   });
-                  //Messaging.sendToTopic(title: 'news', body: '$Fire ', topic: 'news');
-                  Messaging.sendToTopic(title: 'Fire News', body: 'Unverified Fire Alert',topic: subscriber).then((val){
+                  //Messaging.sendToAll(title: 'Fire', body: 'Unverified Fire Alert ');
+                  Messaging.sendToTopic(
+                          title: 'Fire News',
+                          body: 'Unverified Fire Alert',
+                          topic: 'auth')
+                      .then((val) {
                     print('Subscribed to $subscriber');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                          //Confirmed(id)),
+                    );
                   });
                 },
-                child: Text('Push Me'),
+                child: Text('Submit'),
               ),
             ),
           ],
@@ -486,22 +561,24 @@ class _FireState extends State<Fire> {
     //print('Download Url $url');
     return url;
   }
+
   Future<String> uploadImage1() async {
     // print('\n\n$filename\n\n');
     random = randomAlphaNumeric(6);
     final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('$random');
+        FirebaseStorage.instance.ref().child('$random');
     final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage1);
     var downUrl = await (await task.onComplete).ref.getDownloadURL();
     url1 = downUrl.toString();
     //print('Download Url $url');
     return url1;
   }
+
   Future<String> uploadImage2() async {
     // print('\n\n$filename\n\n');
     random = randomAlphaNumeric(6);
     final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('$random');
+        FirebaseStorage.instance.ref().child('$random');
     final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage2);
     var downUrl = await (await task.onComplete).ref.getDownloadURL();
     url2 = downUrl.toString();

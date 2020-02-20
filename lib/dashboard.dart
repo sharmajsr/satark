@@ -43,61 +43,141 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Auth'),
+        title: Text('Dashboard'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                child: myCard(context, 'Fire'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Fire()),
-                  );
-                },
-              ),
-              InkWell(child: myCard(context, 'Land Accident'),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              height: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 3,
+              child: InkWell(
                 onTap: (){
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyAppe()),
-                  );
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => Fire()));
                 },
+                child: Card(
+                    color: Colors.blue,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 7,
+                          child: Container(
+                            color: Colors.white,
+                            child: Image.asset('assets/fire.png'),
+                            // height: 100,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Expanded(flex: 2, child: Center(child: Text('Fire'))),
+                      ],
+                    )),
               ),
-            ],
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyMap()),
-                    );
-                  },
-                  child: myCard(context, 'Animal')),
-              InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Authority()),
-                    );
-                  },
-                  child: myCard(context, 'ETC')),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              height: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 3,
+              child: Card(
+                  color: Colors.blue,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          color: Colors.white,
+                          child: Image.asset('assets/accident.png'),
+                          // height: 100,
+                          width: double.infinity,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Center(child: Text('Road Accidents'))),
+                    ],
+                  )),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              height: MediaQuery.of(context).size.width / 3,
+              width: MediaQuery.of(context).size.width / 3,
+              child: Card(
+                  color: Colors.blue,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          // color: Colors.amber,
+                          child: Image.asset('assets/alert.png'),
+                          // height: 100,
+                          width: double.infinity,
+                        ),
+                      ),
+                      Expanded(flex: 2, child: Center(child: Text('ETC'))),
+                    ],
+                  )),
+            ),
           )
+//          Row(
+//            mainAxisAlignment: MainAxisAlignment.center,
+//            children: <Widget>[
+//              InkWell(
+//                child: myCard(context, 'Fire'),
+//                onTap: () {
+//                  Navigator.push(
+//                    context,
+//                    MaterialPageRoute(builder: (context) => Fire()),
+//                  );
+//                },
+//              ),
+//              InkWell(
+//                child: myCard(context, ' Accident'),
+//                onTap: () {
+////                  Navigator.push(
+////                    context,
+////                    MaterialPageRoute(builder: (context) => MyApe()),
+////                  );
+//                },
+//              ),
+//            ],
+//          ),
+//          Row(
+//            mainAxisAlignment: MainAxisAlignment.center,
+//            children: <Widget>[
+//              InkWell(
+//                  onTap: () {
+//                    Navigator.push(
+//                      context,
+//                      MaterialPageRoute(builder: (context) => MyMap()),
+//                    );
+//                  },
+//                  child: myCard(context, 'Animal','animal.p')),
+//              InkWell(
+//                  onTap: () {
+//                    Navigator.push(
+//                      context,
+//                      MaterialPageRoute(builder: (context) => Authority()),
+//                    );
+//                  },
+//                  child: myCard(context, 'ETC')),
+//            ],
+//          )
         ],
       ),
     );
   }
 }
 
-Widget myCard(BuildContext context, String type) {
+Widget myCard(BuildContext context, String type, String image) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: Container(
@@ -110,7 +190,8 @@ Widget myCard(BuildContext context, String type) {
               Expanded(
                 flex: 7,
                 child: Container(
-                  color: Colors.amber,
+                  // color: Colors.amber,
+                  child: Image.asset('fire.png'),
                   // height: 100,
                   width: double.infinity,
                 ),
