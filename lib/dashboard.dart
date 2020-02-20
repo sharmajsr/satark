@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                      builder: (context) => Fire()));
+                      builder: (context) => MapPage()));
                 },
                 child: Card(
                     color: Colors.blue,

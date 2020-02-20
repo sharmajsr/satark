@@ -15,6 +15,11 @@ import 'package:location/location.dart';
 import 'package:random_string/random_string.dart';
 
 class Fire extends StatefulWidget {
+  final double latitude;
+  final double longitude;
+
+  Fire(this.latitude, this.longitude);
+
   @override
   _FireState createState() => _FireState();
 }
@@ -71,6 +76,7 @@ class _FireState extends State<Fire> {
       });
     });
   }
+
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
   @override
@@ -372,7 +378,7 @@ class _FireState extends State<Fire> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
-                '  Latitude: $latitude \n  Longitude : $longitude ',
+                '  Latitude: ${widget.latitude} \n  Longitude : ${widget.longitude} ',
                 style: GoogleFonts.lato(fontSize: 20),
               ),
             ),
@@ -419,8 +425,9 @@ class _FireState extends State<Fire> {
                     "areaType": l,
                     "id": "$id",
                     "alertIssued": "false",
-                    "latitude": "${latitude}",
-                    "longitude": "${longitude}"
+                    "latitude": "${widget.latitude}",
+                    "longitude": "${widget.longitude}",
+                    "timestamp":"${DateTime.now()}"
                     //   "images":imList
                   };
 
@@ -441,8 +448,8 @@ class _FireState extends State<Fire> {
                     print('Subscribed to $subscriber');
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                          //Confirmed(id)),
+                      MaterialPageRoute(builder: (context) => Confirmed(id)),
+                      //Confirmed(id)),
                     );
                   });
                 },

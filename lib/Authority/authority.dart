@@ -20,7 +20,7 @@ class _AuthorityState extends State<Authority> {
   void initState() {
     super.initState();
     firebaseMessaging.subscribeToTopic('auth').then((val) {
-      print('Subscribed To commond');
+      print('Subscribed To auth');
     });
     //  complaint = Complaints("", "", "", "");
     databaseReference = database.reference();
@@ -36,7 +36,7 @@ class _AuthorityState extends State<Authority> {
       body: FirebaseAnimatedList(
           defaultChild: shimmers(),
           //Center(child: CircularProgressIndicator()),
-          query: databaseReference.child('complaints/'),
+          query: databaseReference.child('complaints/').orderByChild('timestamp'),
           itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation,
               int index) {
             data = snapshot.value;

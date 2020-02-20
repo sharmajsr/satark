@@ -59,13 +59,23 @@ class _SignUpState extends State<SignUp> {
           "pincode": "${pincodeController.text}"
 //
         };
-        datab
-            .reference()
-            .child('users/' + nameController.text)
-            .set(data)
-            .catchError((e) {
-          print(e);
+        Firestore.instance
+            .collection("users")
+            .document((emailController.text))
+            .setData({
+          "name": "${nameController.text}",
+          "password": "${passwordController.text}",
+          "email": "${emailController.text}",
+          "pincode":"${pincodeController.text}",
+          "role":"user"
         });
+//        datab
+//            .reference()
+//            .child('users/' + nameController.text)
+//            .set(data)
+//            .catchError((e) {
+//          print(e);
+//        });
 
         print(user);
 

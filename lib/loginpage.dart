@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:disaster_main/Authority/authority.dart';
 import 'package:disaster_main/dashboard.dart';
 import 'package:disaster_main/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool validateEmail = false;
   bool validatePassword = false;
-  String name, usn, role, mobile, block, room;
+  String name, usn, role, mobile, block, room,pincode;
   bool _isSelected = false;
 
   void _radio() {
@@ -211,33 +212,38 @@ class _LoginState extends State<Login> {
           password: passwordController.text))
           .user;
       print(user.uid);
-//      var d = await Firestore.instance
-//          .collection('users')
-//          .document(emailController.text)
-//          .get()
-//          .then((DocumentSnapshot) async {
-//        name = DocumentSnapshot.data['name'];
-//        usn = DocumentSnapshot.data['usn'];
-//        role = DocumentSnapshot.data['role'];
-//        block = DocumentSnapshot.data['block'];
+
+      var d = await Firestore.instance
+          .collection('users')
+          .document(emailController.text)
+          .get()
+          .then((DocumentSnapshot) async {
+        name = DocumentSnapshot.data['name'];
+        usn = DocumentSnapshot.data['email'];
+        pincode = DocumentSnapshot.data['pincode'];
+
+        role = DocumentSnapshot.data['role'];
 //        room = DocumentSnapshot.data['room'];
 //        mobile = DocumentSnapshot.data['mobile'];
-//        print("name : $name");
-//        final prefs = await SharedPreferences.getInstance();
-//
+        print("name : $name");
+       // final prefs = await SharedPreferences.getInstance();
+
 //        prefs.setString(Constants.loggedInUserRole, role);
 //        prefs.setString(Constants.loggedInUserBlock, block);
 //        prefs.setString(Constants.loggedInUserRoom, room);
 //        prefs.setString(Constants.loggedInUserMobile, mobile);
 //        prefs.setString(Constants.loggedInUserName, name);
 //        prefs.setString(Constants.isLoggedIn, 'true');
-      //  print("Constants name : ${Constants.loggedInUserMobile}");
-      //     print(DocumentSnapshot.data.toString());
-      //});
+//        print("Constants name : ${Constants.loggedInUserMobile}");
+           print(DocumentSnapshot.data.toString());
+      });
       _saving=false;
-
-      Navigator.push(
+      if(role=='user')
+        Navigator.push(
           context, MaterialPageRoute(builder: (context) =>Dashboard(),));
+      else
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) =>Authority(),));
     } catch (e) {
       print(e.message);
       _saving = false;
