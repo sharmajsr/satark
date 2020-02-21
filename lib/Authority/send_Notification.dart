@@ -14,8 +14,8 @@ class ComplaintDetails extends StatefulWidget {
   String id;
   List areaType;
   String sever;
-  String longitude;
-  String latitude;
+  double longitude;
+  double latitude;
 
   ComplaintDetails(
       this.name,
@@ -26,8 +26,8 @@ class ComplaintDetails extends StatefulWidget {
       this.id,
       this.areaType,
       this.sever,
-      this.longitude,
-      this.latitude);
+      this.latitude,
+      this.longitude);
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -42,42 +42,20 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 //  String people;
   Completer<GoogleMapController> _controller = Completer();
 
-  Set<Marker> markers;
-
-//List<Marker> markers;
-//  markers.add(
-//      Marker{markerId: MarkerId{value: 1}, alpha: 1.0, anchor: Offset(0.5, 1.0),
-//      consumeTapEvents: false, draggable: false, flat: false,
-//      icon: Instance of 'BitmapDescriptor',
-//      infoWindow: InfoWindow{title: null, snippet: null, anchor: Offset(0.5, 0.0)},
-//      position: LatLng(19.57014877434959, 77.65307541936636), rotation: 0.0,
-//      visible: true, zIndex: 0.0, onTap: null});
-
-  addMarkerr() async {
-    await markers.add(Marker(
-      markerId: MarkerId('${widget.id}'),
-      draggable: false,
-      onTap: () {
-        print('Marker Tapped');
-      },
-      //  position:LatLng(double.parse(widget.latitude),double.parse(widget.longitude)),
-      position: LatLng(40.712, 12.545),
-    ));
-  }
+//  Set<Marker> markers;
+  List<Marker> allMarkers = [];
 
   void initState() {
     super.initState();
     // addMarkerr();
 
-//    markers.add(Marker(
-//      markerId: MarkerId('${widget.id}'),
-//      draggable: false,
-//      onTap: () {
-//        print('Marker Tapped');
-//      },
-//      //  position:LatLng(double.parse(widget.latitude),double.parse(widget.longitude)),
-//      position: LatLng(40.712, 12.545),
-//    ));
+    allMarkers.add(Marker(
+        markerId: MarkerId('myMarker'),
+        draggable: true,
+        onTap: () {
+          print('Marker Tapped');
+        },
+        position: LatLng(widget.latitude, widget.longitude)));
   }
 
   static const textStyle = TextStyle(
@@ -172,7 +150,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 
                       widget.alertIssued == 'false'
                           ? RaisedButton(
-                              child: Text('Issue an Alert'),
+                        color: Colors.red,
+                              child: Text('Issue an Alert',style: TextStyle(color: Colors.white),),
                               onPressed: () {
                                 Map data = {
                                   "name": "${widget.name}",
@@ -223,14 +202,47 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 //                          //  markers: {myMarker},
 //                        ),
 //                      ),
+//                      Stack(
+//                          children: [Container(
+//                            height: MediaQuery.of(context).size.height,
+//                            width: MediaQuery.of(context).size.width,
+//                            child: GoogleMap(
+//
+//                              initialCameraPosition:
+//                              CameraPosition(target: LatLng(widget.latitude, widget.longitude), zoom: 12.0),
+//                              markers: Set.from(allMarkers),
+//                              onMapCreated: mapCreated,
+//                            ),
+//                          ),
+//                          ]
+//                      ),
                     ],
                   ),
                 ),
               ),
             ),
+            Stack(children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(widget.latitude, widget.longitude),
+                      zoom: 12.0),
+                  markers: Set.from(allMarkers),
+                  onMapCreated: mapCreated,
+                ),
+              ),
+            ]),
           ],
         ),
       ),
     );
+  }
+
+  void mapCreated(controller) {
+    setState(() {
+      _controller = controller;
+    });
   }
 }

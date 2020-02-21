@@ -149,7 +149,7 @@ class _AuthorityState extends State<Authority> {
                       data['name'],
                       severity,
                       str,
-                      data['people'],data['alertIssued'],data['id'],data['areaType'],data['sever'],data['latitude'],data['longitude']
+                      data['people'],data['alertIssued'],data['id'],data['areaType'],data['sever'],double.parse(data['latitude']),double.parse(data['longitude'])
                     )));
       },
       child: Padding(

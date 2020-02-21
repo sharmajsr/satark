@@ -155,16 +155,6 @@ class _MapPageState extends State<MapPage> {
               ],
             ),
           ),
-//          FloatingActionButton(
-//            onPressed: () {
-//              if (markers.length < 1) {
-//                print("no marker added");
-//                Scaffold.of(context).showSnackBar(snackBar);
-//              } else
-//                print(markers.first.position);
-//            },
-//            child: Icon(Icons.local_airport),
-//          ),
         ],
       ),
     );
