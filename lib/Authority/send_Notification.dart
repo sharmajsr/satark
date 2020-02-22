@@ -50,8 +50,12 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
     // addMarkerr();
 
     allMarkers.add(Marker(
+
         markerId: MarkerId('myMarker'),
         draggable: true,
+        infoWindow: InfoWindow(
+          title: 'Adress of location'
+        ),
         onTap: () {
           print('Marker Tapped');
         },
@@ -139,14 +143,6 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                         ],
                       ),
 
-//                      Text(
-//                        'Room : ${widget.room}',
-//                        style: textStyle,
-//                      ),
-//                      Text(
-//                        'Time : ${widget.time}',
-//                        style: textStyle,
-//                      ),
 
                       widget.alertIssued == 'false'
                           ? RaisedButton(
@@ -169,7 +165,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                     .set(data);
                                 widget.alertIssued = 'true';
                                 Messaging.sendToTopic(
-                                        title: 'Fire News',
+
+                                        title: 'fire',
                                         body: 'Verified Fire Alert',
                                         topic: 'auth')
                                     .then((val) {
@@ -226,6 +223,10 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: GoogleMap(
+                  onCameraMove:(CameraPosition cameraPosition){
+                    print(cameraPosition.zoom);
+                  },
+                  zoomGesturesEnabled: true,
                   initialCameraPosition: CameraPosition(
                       target: LatLng(widget.latitude, widget.longitude),
                       zoom: 12.0),

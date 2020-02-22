@@ -1,7 +1,9 @@
-import 'package:disaster_main/Authority/authority.dart';
-import 'package:disaster_main/Disasters/MarkerMap.dart';
+
+import 'package:disaster_main/CountDown.dart';
 import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/Disasters/map.dart';
+import 'package:disaster_main/MessagePage.dart';
+import 'package:disaster_main/messaging/message.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -24,19 +26,52 @@ class _DashboardState extends State<Dashboard> {
 //  }
 
   String deviceToken;
-
+  void handleRouting(dynamic notification) {
+    switch (notification['title']) {
+      case 'fire':
+        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => FirstPage()));
+        break;
+      case 'events':
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => Confirmed('33')));
+        break;
+//      case 'jobs':
+//        Navigator.push(context,
+//            MaterialPageRoute(builder: (BuildContext context) => JobList()));
+//        break;
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
-    firebaseMessaging.getToken().then((token) {
-      deviceToken = token;
-      print('\n\nToken  ' + token);
-    });
+
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        final notification = message['data'];
+        handleRouting(notification);
+        print("\n\nonResume: $message");
+      },
+    );
+    firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+
     firebaseMessaging.subscribeToTopic('auth').then((val) {
-      print('Subscribed To commond');
+      print('Subscribed To auth in dashboard');
+      firebaseMessaging.getToken().then((token) {
+        deviceToken = token;
+        print('\n\nToken  ' + token);
+      });
+      sendTokenToServer(deviceToken);
     });
-    sendTokenToServer(deviceToken);
+
   }
 
   @override

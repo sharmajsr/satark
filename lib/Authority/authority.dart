@@ -155,6 +155,7 @@ class _AuthorityState extends State<Authority> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
+          color:data['alertIssued']!='true'? Colors.green:Colors.redAccent ,
 elevation: 5,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -184,9 +185,10 @@ elevation: 5,
                     ],
                   ),
                 ),
-                Text("How many People : ${data['people'].toString().toLowerCase()} crowd"),
-                Text("Latitude : ${data['latitude']}",style: GoogleFonts.lato(fontSize: 15),),
-                Text("Longitude : ${data['longitude']}",style: GoogleFonts.lato(fontSize: 15),),
+//                Text("How many People : ${data['people'].toString().toLowerCase()} crowd"),
+//                Text("Latitude : ${data['latitude']}",style: GoogleFonts.lato(fontSize: 15),),
+//                Text("Longitude : ${data['longitude']}",style: GoogleFonts.lato(fontSize: 15),),
+                Text("alertIssued : ${data['alertIssued']}",style: GoogleFonts.lato(fontSize: 15),),
               ],
             ),
           ),

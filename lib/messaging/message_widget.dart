@@ -16,40 +16,21 @@ class _MessagingWidgetState extends State<MessagingWidget> {
   void initState() {
     super.initState();
 
-    // _firebaseMessaging.onTokenRefresh.listen(sendTokenToServer);
-    // _firebaseMessaging.getToken().then((token){print(token);});
-    //_firebaseMessaging.subscribeToTopic('all');
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        final notification = message['notification'];
-        setState(() {
-          messages.add(Message(
-              title: notification['title'], body: notification['body']));
-        });
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
 
-        final notification = message['data'];
-        setState(() {
-          messages.add(Message(
-            title: '${notification['title']}',
-            body: '${notification['body']}',
-          ));
-        });
       },
       onResume: (Map<String, dynamic> message) async {
         print("\n\nonResume: $message");
-
-        final notification=message['data'];
-
-       // handleRouting(notification);
       },
     );
-//    _firebaseMessaging.requestNotificationPermissions(
-//        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
   }
 
   @override
