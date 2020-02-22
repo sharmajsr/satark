@@ -165,7 +165,6 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                     .set(data);
                                 widget.alertIssued = 'true';
                                 Messaging.sendToTopic(
-
                                         title: 'fire',
                                         body: 'Verified Fire Alert',
                                         topic: 'auth')

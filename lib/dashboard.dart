@@ -29,7 +29,7 @@ class _DashboardState extends State<Dashboard> {
   void handleRouting(dynamic notification) {
     switch (notification['title']) {
       case 'fire':
-        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => FirstPage()));
+        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => FirstPage(22.80,86.20)));
         break;
       case 'events':
         Navigator.push(context,

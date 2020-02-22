@@ -1,7 +1,7 @@
 import 'package:disaster_main/loginpage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
+import 'package:disaster_main/MessagePage.dart';
 String mytoken;
 
 void main() => runApp(MyApp());
@@ -27,3 +27,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
