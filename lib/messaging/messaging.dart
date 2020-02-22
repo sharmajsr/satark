@@ -20,12 +20,16 @@ class Messaging {
   static Future<Response> sendToTopic(
           {@required String title,
           @required String body,
+            @required String latitude,
+            @required String longitude,
           @required String topic}) =>
-      sendTo(title: title, body: body, fcmToken: '/topics/$topic');
+      sendTo(title: title, body: body, fcmToken: '/topics/$topic',latitude: latitude,longitude: longitude);
 
   static Future<Response> sendTo({
     @required String title,
     @required String body,
+    @required String latitude,
+    @required String longitude,
     @required String fcmToken,
   }) =>
       client.post(
@@ -42,7 +46,9 @@ class Messaging {
           'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'title': '$title',
-           //'sound':'default',
+            'latitude':'$latitude',
+            'longitude':'$longitude',
+            //'sound':'default',
             'id': '1',
             'status': 'done',
           },

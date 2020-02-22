@@ -50,12 +50,9 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
     // addMarkerr();
 
     allMarkers.add(Marker(
-
         markerId: MarkerId('myMarker'),
         draggable: true,
-        infoWindow: InfoWindow(
-          title: 'Adress of location'
-        ),
+        infoWindow: InfoWindow(title: 'Adress of location'),
         onTap: () {
           print('Marker Tapped');
         },
@@ -143,11 +140,13 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                         ],
                       ),
 
-
                       widget.alertIssued == 'false'
                           ? RaisedButton(
-                        color: Colors.red,
-                              child: Text('Issue an Alert',style: TextStyle(color: Colors.white),),
+                              color: Colors.red,
+                              child: Text(
+                                'Issue an Alert',
+                                style: TextStyle(color: Colors.white),
+                              ),
                               onPressed: () {
                                 Map data = {
                                   "name": "${widget.name}",
@@ -167,6 +166,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                 Messaging.sendToTopic(
                                         title: 'fire',
                                         body: 'Verified Fire Alert',
+                                        latitude: "${widget.latitude}",
+                                        longitude:"${widget.longitude}",
                                         topic: 'auth')
                                     .then((val) {
                                   print('Subscribed to local');
@@ -222,7 +223,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: GoogleMap(
-                  onCameraMove:(CameraPosition cameraPosition){
+                  onCameraMove: (CameraPosition cameraPosition) {
                     print(cameraPosition.zoom);
                   },
                   zoomGesturesEnabled: true,

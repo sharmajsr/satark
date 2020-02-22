@@ -1,4 +1,3 @@
-
 import 'package:disaster_main/CountDown.dart';
 import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/Disasters/map.dart';
@@ -26,14 +25,25 @@ class _DashboardState extends State<Dashboard> {
 //  }
 
   String deviceToken;
+
   void handleRouting(dynamic notification) {
+
+    print('Openin Lat Long ${notification['latitude']}  ${notification['longitude']}\n\n');
+
     switch (notification['title']) {
       case 'fire':
-        Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => FirstPage(22.80,86.20)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => FirstPage(
+                    double.parse(notification['latitude']),
+                    double.parse(notification['longitude']))));
         break;
       case 'events':
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => Confirmed('33')));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => Confirmed('33')));
         break;
 //      case 'jobs':
 //        Navigator.push(context,
@@ -41,17 +51,31 @@ class _DashboardState extends State<Dashboard> {
 //        break;
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
 
+    firebaseMessaging.subscribeToTopic('auth').then((val) {
+      print('Subscribed To auth in dashboard');
+      firebaseMessaging.getToken().then((token) {
+        deviceToken = token;
+        print('\n\nToken  ' + token);
+      });
+      sendTokenToServer(deviceToken);
+    });
     firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+//        final notification = message['data'];
+//        handleRouting(notification);
+
         print("onMessage: $message");
       },
       onLaunch: (Map<String, dynamic> message) async {
+        final notification = message['data'];
+        handleRouting(notification);
         print("onLaunch: $message");
       },
       onResume: (Map<String, dynamic> message) async {
@@ -63,15 +87,14 @@ class _DashboardState extends State<Dashboard> {
     firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
 
-    firebaseMessaging.subscribeToTopic('auth').then((val) {
-      print('Subscribed To auth in dashboard');
-      firebaseMessaging.getToken().then((token) {
-        deviceToken = token;
-        print('\n\nToken  ' + token);
-      });
-      sendTokenToServer(deviceToken);
-    });
-
+//    firebaseMessaging.subscribeToTopic('auth').then((val) {
+//      print('Subscribed To auth in dashboard');
+//      firebaseMessaging.getToken().then((token) {
+//        deviceToken = token;
+//        print('\n\nToken  ' + token);
+//      });
+//      sendTokenToServer(deviceToken);
+//    });
   }
 
   @override
@@ -89,11 +112,9 @@ class _DashboardState extends State<Dashboard> {
               height: MediaQuery.of(context).size.width / 3,
               width: MediaQuery.of(context).size.width / 3,
               child: InkWell(
-                onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => MapPage()));
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MapPage()));
                 },
                 child: Card(
                     color: Colors.blue,
