@@ -20,7 +20,7 @@ Our idea is to provide a mobile platform for swift communication between the fir
 Download or clone this repo by using the link below:
 
 ```
-https://github.com/sharmajsr7/satark.git
+https://github.com/sharmajsr/satark.git
 ```
 
 **Step 2:**
