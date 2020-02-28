@@ -16,6 +16,7 @@ class ComplaintDetails extends StatefulWidget {
   String sever;
   double longitude;
   double latitude;
+  Map address;
 
   ComplaintDetails(
       this.name,
@@ -27,7 +28,8 @@ class ComplaintDetails extends StatefulWidget {
       this.areaType,
       this.sever,
       this.latitude,
-      this.longitude);
+      this.longitude,
+      this.address);
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -48,7 +50,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
   void initState() {
     super.initState();
     // addMarkerr();
-
+    print('Adressss'+ '${widget.address}'+'\n\n');
     allMarkers.add(Marker(
         markerId: MarkerId('myMarker'),
         draggable: true,
@@ -148,6 +150,19 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
+
+                                String location;
+                                if('${widget.address}'.contains('neighbourhood'))
+                                  location=widget.address['neighbourhood'];
+                                else if('${widget.address}'.contains('road'))
+                                  location=widget.address['road'];
+                                else if('${widget.address}'.contains('county'))
+                                  location=widget.address['county'];
+                                else if('${widget.address}'.contains('city'))
+                                  location=widget.address['city'];
+                                else
+                                  location=widget.address['state'];
+
                                 Map data = {
                                   "name": "${widget.name}",
                                   "sever": "${widget.sever}",
@@ -156,7 +171,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                   "alertIssued": "true",
                                   "id": "${widget.id}",
                                   "latitude": "${widget.latitude}",
-                                  "longitude": "${widget.longitude}"
+                                  "longitude": "${widget.longitude}",
+                                  "address":widget.address
                                 };
                                 database
                                     .reference()
@@ -164,10 +180,12 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                     .set(data);
                                 widget.alertIssued = 'true';
                                 Messaging.sendToTopic(
-                                        title: 'fire',
-                                        body: 'Verified Fire Alert',
+                                        //title: 'fire',
+                                        title: 'Fire Alert 🔥',
+                                        body: 'Fire Alert at $location',
                                         latitude: "${widget.latitude}",
-                                        longitude:"${widget.longitude}",
+                                        longitude: "${widget.longitude}",
+                                        location: "${location}",
                                         topic: 'auth')
                                     .then((val) {
                                   print('Subscribed to local');

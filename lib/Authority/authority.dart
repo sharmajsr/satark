@@ -16,6 +16,7 @@ class _AuthorityState extends State<Authority> {
   Map<dynamic, dynamic> data;
   final FirebaseDatabase database = FirebaseDatabase.instance;
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
   @override
   void initState() {
     super.initState();
@@ -36,11 +37,12 @@ class _AuthorityState extends State<Authority> {
       body: FirebaseAnimatedList(
           defaultChild: shimmers(),
           //Center(child: CircularProgressIndicator()),
-          query: databaseReference.child('complaints/').orderByChild('timestamp'),
+          query:
+              databaseReference.child('complaints/').orderByChild('timestamp'),
           itemBuilder: (_, DataSnapshot snapshot, Animation<double> animation,
               int index) {
             data = snapshot.value;
-            print('$data');
+//            print('$data');
 
             return eventCard(data);
           }),
@@ -133,65 +135,103 @@ class _AuthorityState extends State<Authority> {
         ? "High Severity"
         : double.parse(data["sever"]) > 30 ? "Medium Severity" : "Low Severity";
 
-
     str = str + data["areaType"][0] == 'false' ? '' : 'School Area';
 
-    str = str + data["areaType"][1] == 'false' ? '' : 'Electrical Infrastructure';
+    str =
+        str + data["areaType"][1] == 'false' ? '' : 'Electrical Infrastructure';
     str = str + data["areaType"][2] == 'false' ? '' : 'Public Marketplace';
     str = str + data["areaType"][3] == 'false' ? '' : 'Factory';
     str = str + data["areaType"][4] == 'false' ? '' : 'Others';
     return InkWell(
       onTap: () {
+        //print('address'+'${data['address']}'+'\n\n' );
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ComplaintDetails(
-                      data['name'],
-                      severity,
-                      str,
-                      data['people'],data['alertIssued'],data['id'],data['areaType'],data['sever'],double.parse(data['latitude']),double.parse(data['longitude'])
-                    )));
+                    data['name'],
+                    severity,
+                    str,
+                    data['people'],
+                    data['alertIssued'],
+                    data['id'],
+                    data['areaType'],
+                    data['sever'],
+                    double.parse(data['latitude']),
+                    double.parse(data['longitude']),
+                    data['address']
+                )));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Card(
-          color:data['alertIssued']!='true'? Colors.green:Colors.redAccent ,
-elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Severity : $severity ",style: GoogleFonts.lato(fontSize: 15),),
-                Text("Type of Area : ",style: GoogleFonts.lato(fontSize: 15),),
-                Padding(
-                  padding: const EdgeInsets.only(left:70.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      data["areaType"][0] == 'false'
-                          ? Container()
-                          : Text('School Area'),
-                      data["areaType"][1] == 'false'
-                          ? Container()
-                          : Text('Electrical Infrastructure'),
-                      data["areaType"][2] == 'false'
-                          ? Container()
-                          : Text('Public Marketplace'),
-                      data["areaType"][3] == 'false'
-                          ? Container()
-                          : Text('Factory'),
-                      data["areaType"][4] == 'false' ? Container() : Text('Others'),
-                    ],
-                  ),
-                ),
+        child: Stack(
+          children: <Widget>[
+            Card(
+              //color:data['alertIssued']=='true'? Colors.green:Colors.redAccent ,
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Severity : $severity ",
+                      style: GoogleFonts.lato(fontSize: 15),
+                    ),
+                    Text(
+                      "Type of Area : ",
+                      style: GoogleFonts.lato(fontSize: 15),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 70.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          data["areaType"][0] == 'false'
+                              ? Container()
+                              : Text('School Area'),
+                          data["areaType"][1] == 'false'
+                              ? Container()
+                              : Text('Electrical Infrastructure'),
+                          data["areaType"][2] == 'false'
+                              ? Container()
+                              : Text('Public Marketplace'),
+                          data["areaType"][3] == 'false'
+                              ? Container()
+                              : Text('Factory'),
+                          data["areaType"][4] == 'false'
+                              ? Container()
+                              : Text('Others'),
+                        ],
+                      ),
+                    ),
 //                Text("How many People : ${data['people'].toString().toLowerCase()} crowd"),
 //                Text("Latitude : ${data['latitude']}",style: GoogleFonts.lato(fontSize: 15),),
 //                Text("Longitude : ${data['longitude']}",style: GoogleFonts.lato(fontSize: 15),),
-                Text("alertIssued : ${data['alertIssued']}",style: GoogleFonts.lato(fontSize: 15),),
-              ],
+                    Text(
+                      "alertIssued : ${data['alertIssued']}",
+                      style: GoogleFonts.lato(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+            data['alertIssued'] == 'true'?
+              Positioned(
+                  child: RotationTransition(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/stamp.png',
+                        height: 70,
+                        width: 70,
+                      ),
+                    ),
+                    turns: new AlwaysStoppedAnimation(345 / 360),
+                  ),
+                  top: 20,
+                  right: 20):Container(),
+
+          ],
         ),
       ),
     );

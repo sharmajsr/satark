@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:disaster_main/Disasters/fire.dart';
+import 'package:disaster_main/model/Address.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
@@ -14,19 +16,37 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   Set<Marker> markers;
+  Map data;
   Color buttonColor = Colors.white;
   Color textColor = Colors.black;
   final snackBar = SnackBar(content: Text('Add '));
   String longitude = '78.9629';
   String latitude = '20.5937';
+  double lat;
+  double long;
   bool showButton = false;
+
   Completer<GoogleMapController> _controller = Completer();
 
+  Future<http.Response> fetchAddress() async{
+    final response = await  http.get('https://us1.locationiq.com/v1/reverse.php?key=42257cbcdd9559&lat=$lat&lon=$long&format=json');
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response, then parse the JSON.
+      //return Address.fromJson(jsonDecode(response.body));
+      data = jsonDecode(response.body);
+      print(response.body);
+      return response;
+    } else {
+      // If the server did not return a 200 OK response, then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     markers = Set.from([]);
+   fetchAddress();
     this.getMyLocationData();
   }
 
@@ -129,7 +149,7 @@ class _MapPageState extends State<MapPage> {
                 RaisedButton(
                   textColor: textColor,
                   color: buttonColor,
-                  onPressed: () {
+                  onPressed: () async {
                     print('My Markers');
                     print(markers);
                     print('\n\n');
@@ -137,15 +157,18 @@ class _MapPageState extends State<MapPage> {
                       print("no marker added");
                       //Scaffold.of(context).showSnackBar(snackBar);
                     } else
-                      print(markers.first.position);
-                    print(markers.first.position.latitude );
+//                    print(markers.first.position);
+//                    print(markers.first.position.latitude );
                     print('\n\n');
+                    lat= markers.first.position.latitude;
+                    long=markers.first.position.longitude;
+                    await fetchAddress();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Fire(
                               markers.first.position.latitude,
-                              markers.first.position.longitude)),
+                              markers.first.position.longitude,data['address'])),
                     );
                   },
                   child: Text('Select This Location',style: TextStyle(fontSize: 16),),

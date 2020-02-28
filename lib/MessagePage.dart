@@ -5,9 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FirstPage extends StatefulWidget {
   double  latitude ;
-
+  String title;
   double  longitude ;
-  FirstPage(this.latitude,this.longitude);
+  FirstPage(this.latitude,this.longitude,this.title);
 
   @override
   _FirstPageState createState() => _FirstPageState();
@@ -21,7 +21,7 @@ class _FirstPageState extends State<FirstPage> {
     super.initState();
     // addMarkerr();
   allCircles.add(Circle(
-   fillColor: Colors.blue.withOpacity(0.2),
+   fillColor: Colors.red.withOpacity(0.2),
 strokeWidth: 0,
       circleId: CircleId('1'),
       center: LatLng(widget.latitude, widget.longitude),
@@ -32,7 +32,7 @@ strokeWidth: 0,
         markerId: MarkerId('myMarker'),
         draggable: true,
         infoWindow: InfoWindow(
-            title: 'Adress of location'
+            title: '${widget.title}'
         ),
         onTap: () {
           print('Marker Tapped');

@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:disaster_main/Authority/authority.dart';
 import 'package:disaster_main/dashboard.dart';
+import 'package:disaster_main/model/constants.dart';
 import 'package:disaster_main/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class Login extends StatefulWidget {
@@ -18,7 +20,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool validateEmail = false;
   bool validatePassword = false;
-  String name, usn, role, mobile, block, room,pincode;
+  String name, email, role, mobile,pincode;
   bool _isSelected = false;
 
   void _radio() {
@@ -219,22 +221,22 @@ class _LoginState extends State<Login> {
           .get()
           .then((DocumentSnapshot) async {
         name = DocumentSnapshot.data['name'];
-        usn = DocumentSnapshot.data['email'];
+        email = DocumentSnapshot.data['email'];
         pincode = DocumentSnapshot.data['pincode'];
-
+        mobile = DocumentSnapshot.data['mobile'];
         role = DocumentSnapshot.data['role'];
 //        room = DocumentSnapshot.data['room'];
 //        mobile = DocumentSnapshot.data['mobile'];
         print("name : $name");
-       // final prefs = await SharedPreferences.getInstance();
+        final prefs = await SharedPreferences.getInstance();
 
-//        prefs.setString(Constants.loggedInUserRole, role);
+        prefs.setString(Constants.loggedInUserRole, role);
 //        prefs.setString(Constants.loggedInUserBlock, block);
-//        prefs.setString(Constants.loggedInUserRoom, room);
-//        prefs.setString(Constants.loggedInUserMobile, mobile);
-//        prefs.setString(Constants.loggedInUserName, name);
-//        prefs.setString(Constants.isLoggedIn, 'true');
-//        print("Constants name : ${Constants.loggedInUserMobile}");
+        prefs.setString(Constants.loggedInUserPinCode, pincode);
+        prefs.setString(Constants.loggedInUserMobile, mobile);
+        prefs.setString(Constants.loggedInUserName, name);
+        prefs.setString(Constants.isLoggedIn, 'true');
+        print("Constants name : ${Constants.loggedInUserMobile}");
            print(DocumentSnapshot.data.toString());
       });
       _saving=false;

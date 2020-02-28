@@ -37,7 +37,8 @@ dependencies:
   toast: ^0.1.5
   cloud_firestore: ^0.12.9+5
   firebase_auth: ^0.14.0+2
-
+  shared_preferences:
+  http:
 
 
 dev_dependencies:
@@ -63,6 +64,7 @@ flutter:
     - assets/alert.png
     - assets/download.jpg
     - assets/download1.jpg
+    - assets/stamp.png
 
   #  - images/a_dot_ham.jpeg
 

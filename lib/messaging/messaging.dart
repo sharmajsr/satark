@@ -22,15 +22,18 @@ class Messaging {
           @required String body,
             @required String latitude,
             @required String longitude,
+            @required String location,
           @required String topic}) =>
-      sendTo(title: title, body: body, fcmToken: '/topics/$topic',latitude: latitude,longitude: longitude);
+      sendTo(title: title, body: body, fcmToken: '/topics/$topic',latitude: latitude,longitude: longitude,location: location);
 
   static Future<Response> sendTo({
     @required String title,
     @required String body,
     @required String latitude,
     @required String longitude,
+    @required String location,
     @required String fcmToken,
+
   }) =>
       client.post(
         'https://fcm.googleapis.com/fcm/send',
@@ -45,9 +48,10 @@ class Messaging {
           'priority': 'high',
           'data': {
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'title': '$title',
+            'title': 'fire',
             'latitude':'$latitude',
             'longitude':'$longitude',
+            'location':'$location',
             //'sound':'default',
             'id': '1',
             'status': 'done',

@@ -17,8 +17,8 @@ import 'package:random_string/random_string.dart';
 class Fire extends StatefulWidget {
   final double latitude;
   final double longitude;
-
-  Fire(this.latitude, this.longitude);
+  final Map address;
+  Fire(this.latitude, this.longitude,this.address);
 
   @override
   _FireState createState() => _FireState();
@@ -50,6 +50,7 @@ class _FireState extends State<Fire> {
   final List<Message> messages = [];
   String longitude = 'nothing yet';
   String latitude = 'nothing yet';
+  int _currentIndex = 0;
 
   void getMyLocationData() async {
     var currentLocation = LocationData;
@@ -83,7 +84,9 @@ class _FireState extends State<Fire> {
   void initState() {
     super.initState();
     this.getMyLocationData();
-
+    print('Getiing address');
+      print(widget.address);
+      print('\n\n');
     _firebaseMessaging.getToken().then((token) {
       deviceToken = token;
       print('\n\nToken' + token);
@@ -129,6 +132,7 @@ class _FireState extends State<Fire> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Fire '),
       ),
@@ -368,20 +372,8 @@ class _FireState extends State<Fire> {
                         : uploadPicture2()),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-              child: Text(
-                '5. Location Coordinates ',
-                style: GoogleFonts.lato(fontSize: 20),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                '  Latitude: ${widget.latitude} \n  Longitude : ${widget.longitude} ',
-                style: GoogleFonts.lato(fontSize: 20),
-              ),
-            ),
+//
+
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: FlatButton(
@@ -427,7 +419,8 @@ class _FireState extends State<Fire> {
                     "alertIssued": "false",
                     "latitude": "${widget.latitude}",
                     "longitude": "${widget.longitude}",
-                    "timestamp":"${DateTime.now()}"
+                    "address":widget.address,
+                    "timestamp": "${DateTime.now()}"
                     //   "images":imList
                   };
 
