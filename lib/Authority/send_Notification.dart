@@ -50,7 +50,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
   void initState() {
     super.initState();
     // addMarkerr();
-    print('Adressss'+ '${widget.address}'+'\n\n');
+    print('Adressss' + '${widget.address}' + '\n\n');
     allMarkers.add(Marker(
         markerId: MarkerId('myMarker'),
         draggable: true,
@@ -150,18 +150,18 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
-
-                                String location='';
-                                if('${widget.address}'.contains('neighbourhood'))
-                                  location=widget.address['neighbourhood'];
-                                else if('${widget.address}'.contains('road'))
-                                  location=widget.address['road'];
-                                else if('${widget.address}'.contains('county'))
-                                  location=widget.address['county'];
-                                else if('${widget.address}'.contains('city'))
-                                  location=widget.address['city'];
+                                String location = '';
+                                if ('${widget.address}'
+                                    .contains('neighbourhood'))
+                                  location = widget.address['neighbourhood'];
+                                else if ('${widget.address}'.contains('road'))
+                                  location = widget.address['road'];
+                                else if ('${widget.address}'.contains('county'))
+                                  location = widget.address['county'];
+                                else if ('${widget.address}'.contains('city'))
+                                  location = widget.address['city'];
                                 else
-                                  location=widget.address['state'];
+                                  location = widget.address['state'];
 
                                 Map data = {
                                   "name": "${widget.name}",
@@ -172,8 +172,17 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                   "id": "${widget.id}",
                                   "latitude": "${widget.latitude}",
                                   "longitude": "${widget.longitude}",
-                                  "address":widget.address
+                                  "address": widget.address
                                 };
+                                database
+                                    .reference()
+                                    .child("location/")
+                                    .push()
+                                    .set({
+                                  'id': '$location',
+                                  'loc': '${widget.longitude}',
+                                  'lat': '${widget.latitude}'
+                                });
                                 database
                                     .reference()
                                     .child("complaints/" + widget.id)

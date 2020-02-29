@@ -104,15 +104,15 @@ class _DashboardState extends State<Dashboard> {
 
   List<Widget> _widgetOptions = <Widget>[
     CategorySelection(),
+    GraphPage(),
     DashboardMapPage(),
-   // HomePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-       elevation: 25,
+        elevation: 25,
 //        selectedItemColor: Colors.black,
 //        unselectedItemColor: Colors.white,
         onTap: (int index) {
@@ -123,11 +123,15 @@ class _DashboardState extends State<Dashboard> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Category Selection'),
+            title: Text('Complaint'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('Accident Prone'),
+            icon: Icon(Icons.pie_chart),
+            title: Text('Analytics'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            title: Text('Live Map'),
           ),
         ],
       ),

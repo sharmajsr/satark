@@ -102,15 +102,19 @@ class _DashboardMapPageState extends State<DashboardMapPage> {
         if (event.hasData){
           //print(' Data \n '+event.data.snapshot.value.toString()+'\n\n');
           data=event.data.snapshot.value;
+          if(data != null )
           data.forEach((key, value) {
             print('Key Values' + key + ' ' + ' ${value['loc']}');
-            allCircles.add(Circle(
-              fillColor: Colors.red.withOpacity(0.2),
-              strokeWidth: 0,
-              circleId: CircleId('${value['id']}'),
-              center: LatLng(value['lat'], value['loc']),
-              radius: 1000,
-            ));
+            loc=double.parse(value['loc']);
+            lat=double.parse(value['lat']);
+
+//            allCircles.add(Circle(
+//              fillColor: Colors.red.withOpacity(0.2),
+//              strokeWidth: 0,
+//              circleId: CircleId('${value['id']}'),
+//              center: LatLng(double.parse(value['lat']), double.parse(value['loc'])),
+//              radius: 1000,
+//            ));
 
             allMarkers.add(Marker(
                 markerId: MarkerId('${value['id']}'),
@@ -119,7 +123,9 @@ class _DashboardMapPageState extends State<DashboardMapPage> {
                 onTap: () {
                   print('Marker Tapped');
                 },
-                position: LatLng(value['lat'], value['loc'])));
+
+             position:LatLng(lat,loc),
+            ));
 
             print('Data : ${value}\n\nLength : ${allMarkers.length}');
           });

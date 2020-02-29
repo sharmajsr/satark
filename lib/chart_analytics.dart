@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class HomePage extends StatefulWidget {
+class GraphPage extends StatefulWidget {
  // final Widget child;
 
   //HomePage({Key key, this.child}) : super(key: key);
 
-  _HomePageState createState() => _HomePageState();
+  _GraphPageState createState() => _GraphPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GraphPageState extends State<GraphPage> {
   List<charts.Series<Task, String>> _seriesPieData;
   List<charts.Series<Task, String>> _seriesPieData1;
   List<charts.Series<Task, String>> _seriesPieData2;
