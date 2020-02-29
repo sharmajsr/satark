@@ -47,24 +47,31 @@ class _CategorySelectionState extends State<CategorySelection> {
           child: Container(
             height: MediaQuery.of(context).size.width / 3,
             width: MediaQuery.of(context).size.width / 3,
-            child: Card(
-                color: Colors.blue,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        color: Colors.white,
-                        child: Image.asset('assets/accident.png'),
-                        // height: 100,
-                        width: double.infinity,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MapPage()));
+              },
+              child: Card(
+
+                  color: Colors.blue,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          color: Colors.white,
+                          child: Image.asset('assets/accident.png'),
+                          // height: 100,
+                          width: double.infinity,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                        flex: 2,
-                        child: Center(child: Text('Road Accidents'))),
-                  ],
-                )),
+                      Expanded(
+                          flex: 2,
+                          child: Center(child: Text('Road Accidents'))),
+                    ],
+                  )),
+            ),
           ),
         ),
         Padding(
@@ -72,22 +79,28 @@ class _CategorySelectionState extends State<CategorySelection> {
           child: Container(
             height: MediaQuery.of(context).size.width / 3,
             width: MediaQuery.of(context).size.width / 3,
-            child: Card(
-                color: Colors.blue,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 7,
-                      child: Container(
-                        // color: Colors.amber,
-                        child: Image.asset('assets/alert.png'),
-                        // height: 100,
-                        width: double.infinity,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MapPage()));
+              },
+              child: Card(
+                  color: Colors.blue,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 7,
+                        child: Container(
+                          // color: Colors.amber,
+                          child: Image.asset('assets/alert.png'),
+                          // height: 100,
+                          width: double.infinity,
+                        ),
                       ),
-                    ),
-                    Expanded(flex: 2, child: Center(child: Text('ETC'))),
-                  ],
-                )),
+                      Expanded(flex: 2, child: Center(child: Text('ETC'))),
+                    ],
+                  )),
+            ),
           ),
         ),
       ],

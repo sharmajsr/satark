@@ -85,81 +85,72 @@ class _DashboardMapPageState extends State<DashboardMapPage> {
   List<Circle> allCircles = [];
 
   var _firebaseRef = FirebaseDatabase().reference().child('location/');
+
   @override
   void initState() {
     super.initState();
 
     databaseReference = database.reference();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Event>(
-      stream:   _firebaseRef.onValue,
-      //databaseReference.child('location/').onValue,
-      builder: (BuildContext context, AsyncSnapshot<Event> event) {
-        if (event.hasData){
-          //print(' Data \n '+event.data.snapshot.value.toString()+'\n\n');
-          data=event.data.snapshot.value;
-          if(data != null )
-          data.forEach((key, value) {
-            print('Key Values' + key + ' ' + ' ${value['loc']}');
-            loc=double.parse(value['loc']);
-            lat=double.parse(value['lat']);
+        stream: _firebaseRef.onValue,
+        //databaseReference.child('location/').onValue,
+        builder: (BuildContext context, AsyncSnapshot<Event> event) {
+          if (event.hasData) {
+            //print(' Data \n '+event.data.snapshot.value.toString()+'\n\n');
+            data = event.data.snapshot.value;
+            if (data != null)
+              data.forEach((key, value) {
+                print('Key Values' + key + ' ' + ' ${value['loc']}');
+                loc = double.parse(value['loc']);
+                lat = double.parse(value['lat']);
 
-//            allCircles.add(Circle(
-//              fillColor: Colors.red.withOpacity(0.2),
-//              strokeWidth: 0,
-//              circleId: CircleId('${value['id']}'),
-//              center: LatLng(double.parse(value['lat']), double.parse(value['loc'])),
-//              radius: 1000,
-//            ));
-
-            allMarkers.add(Marker(
-                markerId: MarkerId('${value['id']}'),
-                draggable: true,
-                infoWindow: InfoWindow(title: 'Mysore'),
-                onTap: () {
-                  print('Marker Tapped');
-                },
-
-             position:LatLng(lat,loc),
+            allCircles.add(Circle(
+              fillColor: Colors.red.withOpacity(0.2),
+              strokeWidth: 0,
+              circleId: CircleId('${value['id']}'),
+              center:  LatLng(lat, loc),
+              radius: 1000,
             ));
 
-            print('Data : ${value}\n\nLength : ${allMarkers.length}');
-          });
-        //  setState(() {});
-          return Stack(children: [
-            Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: GoogleMap(
-                myLocationEnabled: true,
-                onCameraMove: (CameraPosition cameraPosition) {
-                  print(cameraPosition.zoom);
-                },
-                zoomGesturesEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                initialCameraPosition:
-                CameraPosition(target: LatLng(20.5937, 78.9629), zoom: 5.0),
-                markers: Set.from(allMarkers),
-                circles: Set.from(allCircles),
+                allMarkers.add(Marker(
+                  markerId: MarkerId('${value['id']}'),
+                  draggable: true,
+                  infoWindow: InfoWindow(title: '${value['id']}'),
+                  onTap: () {
+                    print('Marker Tapped');
+                  },
+                  position: LatLng(lat, loc),
+                ));
+
+                print('Data : ${value}\n\nLength : ${allMarkers.length}');
+              });
+            //  setState(() {});
+            return Stack(children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: GoogleMap(
+                  myLocationEnabled: true,
+                  onCameraMove: (CameraPosition cameraPosition) {
+                    print(cameraPosition.zoom);
+                  },
+                  zoomGesturesEnabled: true,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(20.5937, 78.9629), zoom: 5.0),
+                  markers: Set.from(allMarkers),
+                  circles: Set.from(allCircles),
+                ),
               ),
-            ),
-          ]);
-        }
-        else
-          return Center(child: CircularProgressIndicator());
-      }
-    );
+            ]);
+          } else
+            return Center(child: CircularProgressIndicator());
+        });
   }
 }
