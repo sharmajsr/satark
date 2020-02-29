@@ -151,7 +151,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                               ),
                               onPressed: () {
 
-                                String location;
+                                String location='';
                                 if('${widget.address}'.contains('neighbourhood'))
                                   location=widget.address['neighbourhood'];
                                 else if('${widget.address}'.contains('road'))
@@ -197,40 +197,6 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                               child: Text('Confirmed'),
                               onPressed: null,
                             ),
-//                      Container(
-//                        height: 400,
-//                        child: GoogleMap(
-//                          myLocationButtonEnabled: true,
-//                          compassEnabled: true,
-//                          myLocationEnabled: true,
-//                          markers: markers,
-//                          mapType: MapType.normal,
-//                          onMapCreated: (GoogleMapController controller) {
-//                            _controller.complete(controller);
-//                          },
-//
-//                          initialCameraPosition: CameraPosition(
-//                            target: LatLng(double.parse(widget.latitude),
-//                                double.parse(widget.longitude)),
-//                            zoom: 11,
-//                          ),
-//                          //  markers: {myMarker},
-//                        ),
-//                      ),
-//                      Stack(
-//                          children: [Container(
-//                            height: MediaQuery.of(context).size.height,
-//                            width: MediaQuery.of(context).size.width,
-//                            child: GoogleMap(
-//
-//                              initialCameraPosition:
-//                              CameraPosition(target: LatLng(widget.latitude, widget.longitude), zoom: 12.0),
-//                              markers: Set.from(allMarkers),
-//                              onMapCreated: mapCreated,
-//                            ),
-//                          ),
-//                          ]
-//                      ),
                     ],
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/Disasters/map.dart';
 import 'package:disaster_main/MessagePage.dart';
 import 'package:disaster_main/categorySelection.dart';
+import 'package:disaster_main/chart_analytics.dart';
 import 'package:disaster_main/messaging/message.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -41,8 +42,7 @@ class _DashboardState extends State<Dashboard> {
                 builder: (BuildContext context) => FirstPage(
                     double.parse(notification['latitude']),
                     double.parse(notification['longitude']),
-                  notification['location']
-                )));
+                    notification['location'])));
         break;
       case 'events':
         Navigator.push(
@@ -104,14 +104,15 @@ class _DashboardState extends State<Dashboard> {
 
   List<Widget> _widgetOptions = <Widget>[
     CategorySelection(),
-    DashboardMap(),
+    DashboardMapPage(),
+   // HomePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.red,
+       elevation: 25,
 //        selectedItemColor: Colors.black,
 //        unselectedItemColor: Colors.white,
         onTap: (int index) {
@@ -139,29 +140,3 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-//
-//Widget myCard(BuildContext context, String type, String image) {
-//  return Padding(
-//    padding: const EdgeInsets.all(15.0),
-//    child: Container(
-//      height: MediaQuery.of(context).size.width / 3,
-//      width: MediaQuery.of(context).size.width / 3,
-//      child: Card(
-//          color: Colors.blue,
-//          child: Column(
-//            children: <Widget>[
-//              Expanded(
-//                flex: 7,
-//                child: Container(
-//                  // color: Colors.amber,
-//                  child: Image.asset('fire.png'),
-//                  // height: 100,
-//                  width: double.infinity,
-//                ),
-//              ),
-//              Expanded(flex: 2, child: Center(child: Text(type))),
-//            ],
-//          )),
-//    ),
-//  );
-//}
