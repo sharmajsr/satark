@@ -21,7 +21,7 @@ class _CategorySelectionState extends State<CategorySelection> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MapPage()));
+                    MaterialPageRoute(builder: (context) => MapPage('0')));
               },
               child: Card(
                   color: Colors.blue,
@@ -50,7 +50,7 @@ class _CategorySelectionState extends State<CategorySelection> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MapPage()));
+                    MaterialPageRoute(builder: (context) => MapPage('1')));
               },
               child: Card(
 
@@ -82,7 +82,7 @@ class _CategorySelectionState extends State<CategorySelection> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MapPage()));
+                    MaterialPageRoute(builder: (context) => MapPage('3')));
               },
               child: Card(
                   color: Colors.blue,

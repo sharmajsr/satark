@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => FirstPage(
+                builder: (BuildContext context) => AlertMap(
                     double.parse(notification['latitude']),
                     double.parse(notification['longitude']),
                     notification['location'])));

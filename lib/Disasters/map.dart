@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:disaster_main/Disasters/RoadAccident.dart';
 import 'package:disaster_main/Disasters/fire.dart';
 import 'package:disaster_main/model/Address.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
 class MapPage extends StatefulWidget {
-
+  String type;
+  MapPage(this.type);
   @override
   _MapPageState createState() => _MapPageState();
 }
@@ -163,6 +165,7 @@ class _MapPageState extends State<MapPage> {
                     lat= markers.first.position.latitude;
                     long=markers.first.position.longitude;
                     await fetchAddress();
+                    if(widget.type=='0')
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -170,6 +173,15 @@ class _MapPageState extends State<MapPage> {
                               markers.first.position.latitude,
                               markers.first.position.longitude,data['address'])),
                     );
+                    else
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RoadAccident(
+                                markers.first.position.latitude,
+                                markers.first.position.longitude,data['address'])),
+                      );
+
                   },
                   child: Text('Select This Location',style: TextStyle(fontSize: 16),),
                   shape: RoundedRectangleBorder(

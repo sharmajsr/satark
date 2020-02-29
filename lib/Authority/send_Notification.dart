@@ -17,6 +17,7 @@ class ComplaintDetails extends StatefulWidget {
   double longitude;
   double latitude;
   Map address;
+  String type;
 
   ComplaintDetails(
       this.name,
@@ -29,7 +30,8 @@ class ComplaintDetails extends StatefulWidget {
       this.sever,
       this.latitude,
       this.longitude,
-      this.address);
+      this.address,
+      this.type);
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -42,6 +44,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 //  String severity;
 //  String AreaType;
 //  String people;
+  String title;
+  String body;
   Completer<GoogleMapController> _controller = Completer();
 
 //  Set<Marker> markers;
@@ -171,6 +175,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                   "alertIssued": "true",
                                   "id": "${widget.id}",
                                   "latitude": "${widget.latitude}",
+                                  "type": "${widget.type}",
                                   "longitude": "${widget.longitude}",
                                   "address": widget.address
                                 };
@@ -188,10 +193,20 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                     .child("complaints/" + widget.id)
                                     .set(data);
                                 widget.alertIssued = 'true';
+                                if(widget.type=='fire')
+                                {
+                                  title='Fire Alert 🔥';
+                                  body='Fire Alert at $location';
+                                }
+                                else
+                                  {
+                                    title='Road Accident 🚗';
+                                    body='Road Accident Alert at $location';
+                                  }
                                 Messaging.sendToTopic(
                                         //title: 'fire',
-                                        title: 'Fire Alert 🔥',
-                                        body: 'Fire Alert at $location',
+                                        title: '$title',
+                                        body: '$body',
                                         latitude: "${widget.latitude}",
                                         longitude: "${widget.longitude}",
                                         location: "${location}",

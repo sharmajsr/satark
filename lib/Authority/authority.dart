@@ -159,7 +159,8 @@ class _AuthorityState extends State<Authority> {
                     data['sever'],
                     double.parse(data['latitude']),
                     double.parse(data['longitude']),
-                    data['address']
+                    data['address'],
+                  data['type']
                 )));
       },
       child: Padding(
@@ -208,6 +209,10 @@ class _AuthorityState extends State<Authority> {
 //                Text("How many People : ${data['people'].toString().toLowerCase()} crowd"),
 //                Text("Latitude : ${data['latitude']}",style: GoogleFonts.lato(fontSize: 15),),
 //                Text("Longitude : ${data['longitude']}",style: GoogleFonts.lato(fontSize: 15),),
+                    Text(
+                      "Type : ${data['type']}",
+                      style: GoogleFonts.lato(fontSize: 15),
+                    ),
                     Text(
                       "alertIssued : ${data['alertIssued']}",
                       style: GoogleFonts.lato(fontSize: 15),

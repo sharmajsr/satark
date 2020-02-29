@@ -1,32 +1,28 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:disaster_main/CountDown.dart';
-import 'package:disaster_main/main.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
+import 'package:disaster_main/CountDown.dart';
 import 'package:disaster_main/messaging/message.dart';
 import 'package:disaster_main/messaging/messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:random_string/random_string.dart';
 
-class Fire extends StatefulWidget {
+class RoadAccident extends StatefulWidget {
   final double latitude;
   final double longitude;
   final Map address;
-  Fire(this.latitude, this.longitude,this.address);
-
+  RoadAccident(this.latitude, this.longitude,this.address);
   @override
-  _FireState createState() => _FireState();
+  _RoadAccidentState createState() => _RoadAccidentState();
 }
-
 final FirebaseDatabase database = FirebaseDatabase.instance;
 
-class _FireState extends State<Fire> {
+class _RoadAccidentState extends State<RoadAccident> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   String url;
   String url1;
@@ -84,9 +80,6 @@ class _FireState extends State<Fire> {
   void initState() {
     super.initState();
     this.getMyLocationData();
-    print('Getiing address');
-      print(widget.address);
-      print('\n\n');
     _firebaseMessaging.getToken().then((token) {
       deviceToken = token;
       print('\n\nToken' + token);
@@ -124,9 +117,9 @@ class _FireState extends State<Fire> {
   }
 
   Widget buildMessage(Message message) => ListTile(
-        title: Text(message.title),
-        subtitle: Text(message.body),
-      );
+    title: Text(message.title),
+    subtitle: Text(message.body),
+  );
 
   //int height4= MediaQuery.of(context).size.height;
   @override
@@ -134,7 +127,7 @@ class _FireState extends State<Fire> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Fire '),
+        title: Text('Road Accident '),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -142,7 +135,7 @@ class _FireState extends State<Fire> {
           //  crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              '1. Severity of Fire',
+              '1. Traffic',
               style: GoogleFonts.lato(fontSize: 20),
             ),
             Slider(
@@ -230,103 +223,10 @@ class _FireState extends State<Fire> {
                 ],
               ),
             ),
-            Text(
-              '3. Area Type ',
-              style: GoogleFonts.lato(fontSize: 20),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: areaType1,
-                        onChanged: (val) {
-                          areaType1 = !areaType1;
-//                          areaType2 = false;
-//                          areaType3 = false;
-//                          areaType4 = false;
-//                          areaType5 = false;
-                          setState(() {});
-                        },
-                      ),
-                      Text('School Area'),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: areaType2,
-                        onChanged: (val) {
-                          //areaType1 = false;
-                          areaType2 = !areaType2;
-                          //  areaType3 = false;
-                          //areaType4 = false;
-                          //areaType5 = false;
-
-                          setState(() {});
-                        },
-                      ),
-                      Text('Electrical Infrastructure'),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: areaType3,
-                        onChanged: (val) {
-//                          areaType1 = false;
-//                          areaType2 = false;
-                          areaType3 = !areaType3;
-//                          areaType4 = false;
-//                          areaType5 = false;
-                          setState(() {});
-                        },
-                      ),
-                      Text('Public / Marketplace'),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: areaType4,
-                        onChanged: (val) {
-//                          areaType1 = false;
-//                          areaType2 = false;
-//                          areaType3 = false;
-                          areaType4 = !areaType4;
-//                          areaType5 = false;
-                          setState(() {});
-                        },
-                      ),
-                      Text('Factory'),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Checkbox(
-                        value: areaType5,
-                        onChanged: (val) {
-//                          areaType1 = false;
-//                          areaType2 = false;
-//                          areaType3 = false;
-//                          areaType4 = false;
-                          areaType5 = !areaType5;
-                          setState(() {});
-                        },
-                      ),
-                      Text('Others'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
-                '4. Upload Image ( *Optional )',
+                '3. Upload Image ( *Optional )',
                 style: GoogleFonts.lato(fontSize: 20),
               ),
             ),
@@ -340,11 +240,11 @@ class _FireState extends State<Fire> {
                     },
                     child: sampleImage == null
                         ? Container(
-                            width: 60,
-                            height: 60,
-                            color: Colors.blue,
-                            child: Center(child: Icon(Icons.add)),
-                          )
+                      width: 60,
+                      height: 60,
+                      color: Colors.blue,
+                      child: Center(child: Icon(Icons.add)),
+                    )
                         : uploadPicture()),
                 FlatButton(
                     onPressed: () {
@@ -352,11 +252,11 @@ class _FireState extends State<Fire> {
                     },
                     child: sampleImage1 == null
                         ? Container(
-                            width: 60,
-                            height: 60,
-                            color: Colors.blue,
-                            child: Center(child: Icon(Icons.add)),
-                          )
+                      width: 60,
+                      height: 60,
+                      color: Colors.blue,
+                      child: Center(child: Icon(Icons.add)),
+                    )
                         : uploadPicture1()),
                 FlatButton(
                     onPressed: () {
@@ -364,11 +264,11 @@ class _FireState extends State<Fire> {
                     },
                     child: sampleImage2 == null
                         ? Container(
-                            width: 60,
-                            height: 60,
-                            color: Colors.blue,
-                            child: Center(child: Icon(Icons.add)),
-                          )
+                      width: 60,
+                      height: 60,
+                      color: Colors.blue,
+                      child: Center(child: Icon(Icons.add)),
+                    )
                         : uploadPicture2()),
               ],
             ),
@@ -421,7 +321,7 @@ class _FireState extends State<Fire> {
                     "longitude": "${widget.longitude}",
                     "address":widget.address,
                     "timestamp": "${DateTime.now()}",
-                    "type":"fire"
+                    "type":"road"
                     //   "images":imList
                   };
 
@@ -435,9 +335,9 @@ class _FireState extends State<Fire> {
                   });
                   //Messaging.sendToAll(title: 'Fire', body: 'Unverified Fire Alert ');
                   Messaging.sendToTopic(
-                          title: 'Fire News',
-                          body: 'Unverified Fire Alert',
-                          topic: 'auth')
+                      title: 'Road Accident News',
+                      body: 'Unverified Road Accident Alert',
+                      topic: 'auth')
                       .then((val) {
                     print('Subscribed to $subscriber');
                     Navigator.push(
@@ -555,7 +455,7 @@ class _FireState extends State<Fire> {
     // print('\n\n$filename\n\n');
     random = randomAlphaNumeric(6);
     final StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('$random');
+    FirebaseStorage.instance.ref().child('$random');
     final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
     var downUrl = await (await task.onComplete).ref.getDownloadURL();
     url = downUrl.toString();
@@ -567,7 +467,7 @@ class _FireState extends State<Fire> {
     // print('\n\n$filename\n\n');
     random = randomAlphaNumeric(6);
     final StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('$random');
+    FirebaseStorage.instance.ref().child('$random');
     final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage1);
     var downUrl = await (await task.onComplete).ref.getDownloadURL();
     url1 = downUrl.toString();
@@ -579,7 +479,7 @@ class _FireState extends State<Fire> {
     // print('\n\n$filename\n\n');
     random = randomAlphaNumeric(6);
     final StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('$random');
+    FirebaseStorage.instance.ref().child('$random');
     final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage2);
     var downUrl = await (await task.onComplete).ref.getDownloadURL();
     url2 = downUrl.toString();
@@ -587,3 +487,4 @@ class _FireState extends State<Fire> {
     return url2;
   }
 }
+

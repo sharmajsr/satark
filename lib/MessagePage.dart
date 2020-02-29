@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class FirstPage extends StatefulWidget {
+class AlertMap extends StatefulWidget {
   double  latitude ;
   String title;
   double  longitude ;
-  FirstPage(this.latitude,this.longitude,this.title);
+  AlertMap(this.latitude,this.longitude,this.title);
 
   @override
-  _FirstPageState createState() => _FirstPageState();
+  _AlertMapState createState() => _AlertMapState();
 }
 
-class _FirstPageState extends State<FirstPage> {
+class _AlertMapState extends State<AlertMap> {
   Completer<GoogleMapController> _controller = Completer();
   List<Marker> allMarkers = [];
   List <Circle> allCircles =[];
