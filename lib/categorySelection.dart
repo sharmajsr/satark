@@ -1,6 +1,6 @@
 import 'package:disaster_main/Disasters/map.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 class CategorySelection extends StatefulWidget {
   @override
@@ -8,11 +8,17 @@ class CategorySelection extends StatefulWidget {
 }
 
 class _CategorySelectionState extends State<CategorySelection> {
+  final textStyle = TextStyle(fontSize: 14);
+
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Text(
+          'Report an Accident',
+          style: GoogleFonts.lato(fontSize: 30),
+        ),
         Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
@@ -24,7 +30,8 @@ class _CategorySelectionState extends State<CategorySelection> {
                     MaterialPageRoute(builder: (context) => MapPage('0')));
               },
               child: Card(
-                  color: Colors.blue,
+                  elevation: 12,
+                  // color: Colors.blue,
                   child: Column(
                     children: <Widget>[
                       Expanded(
@@ -36,7 +43,13 @@ class _CategorySelectionState extends State<CategorySelection> {
                           width: double.infinity,
                         ),
                       ),
-                      Expanded(flex: 2, child: Center(child: Text('Fire'))),
+                      Expanded(
+                          flex: 2,
+                          child: Center(
+                              child: Text(
+                            'Fire',
+                            style: textStyle,
+                          ))),
                     ],
                   )),
             ),
@@ -53,8 +66,8 @@ class _CategorySelectionState extends State<CategorySelection> {
                     MaterialPageRoute(builder: (context) => MapPage('1')));
               },
               child: Card(
-
-                  color: Colors.blue,
+                  elevation: 12,
+                  // color: Colors.blue,
                   child: Column(
                     children: <Widget>[
                       Expanded(
@@ -68,7 +81,11 @@ class _CategorySelectionState extends State<CategorySelection> {
                       ),
                       Expanded(
                           flex: 2,
-                          child: Center(child: Text('Road Accidents'))),
+                          child: Center(
+                              child: Text(
+                            'Road Accidents',
+                            style: textStyle,
+                          ))),
                     ],
                   )),
             ),
@@ -85,7 +102,8 @@ class _CategorySelectionState extends State<CategorySelection> {
                     MaterialPageRoute(builder: (context) => MapPage('3')));
               },
               child: Card(
-                  color: Colors.blue,
+                  elevation: 12,
+                  // color: Colors.blue,
                   child: Column(
                     children: <Widget>[
                       Expanded(
@@ -97,7 +115,13 @@ class _CategorySelectionState extends State<CategorySelection> {
                           width: double.infinity,
                         ),
                       ),
-                      Expanded(flex: 2, child: Center(child: Text('ETC'))),
+                      Expanded(
+                          flex: 2,
+                          child: Center(
+                              child: Text(
+                            'ETC',
+                            style: textStyle,
+                          ))),
                     ],
                   )),
             ),

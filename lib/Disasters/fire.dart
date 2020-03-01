@@ -135,6 +135,7 @@ class _FireState extends State<Fire> {
 
       appBar: AppBar(
         title: Text('Fire '),
+        backgroundColor: Color(0xff028090),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -337,6 +338,7 @@ class _FireState extends State<Fire> {
                 FlatButton(
                     onPressed: () {
                       getImageCamera();
+
                     },
                     child: sampleImage == null
                         ? Container(
@@ -410,6 +412,18 @@ class _FireState extends State<Fire> {
 //                 if(sUrl1.isNotEmpty) imList.add(sUrl1);
 //                 if(sUrl2.isNotEmpty) imList.add(sUrl2);
                   var id = randomAlphaNumeric(6);
+                  String location = '';
+                  if ('${widget.address}'
+                      .contains('neighbourhood'))
+                    location = widget.address['neighbourhood'];
+                  else if ('${widget.address}'.contains('road'))
+                    location = widget.address['road'];
+                  else if ('${widget.address}'.contains('county'))
+                    location = widget.address['county'];
+                  else if ('${widget.address}'.contains('city'))
+                    location = widget.address['city'];
+                  else
+                    location = widget.address['state'];
                   Map data = {
                     "name": "shubham",
                     "sever": "$val",
@@ -433,10 +447,11 @@ class _FireState extends State<Fire> {
                       .catchError((e) {
                     print('ERROR ho gya $e\n\n');
                   });
+
                   //Messaging.sendToAll(title: 'Fire', body: 'Unverified Fire Alert ');
                   Messaging.sendToTopic(
                           title: 'Fire News',
-                          body: 'Unverified Fire Alert',
+                          body: 'Unverified Fire Alert at $location',
                           topic: 'auth')
                       .then((val) {
                     print('Subscribed to $subscriber');
@@ -458,7 +473,7 @@ class _FireState extends State<Fire> {
 
   Future getImageCamera() async {
     var tempImage = await ImagePicker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
       imageQuality: 40,
     );
     setState(() {
@@ -471,7 +486,7 @@ class _FireState extends State<Fire> {
 
   Future getImageCameraO() async {
     var tempImage = await ImagePicker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
       imageQuality: 40,
     );
     setState(() {
@@ -484,7 +499,7 @@ class _FireState extends State<Fire> {
 
   Future getImageCameraT() async {
     var tempImage = await ImagePicker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
       imageQuality: 40,
     );
     setState(() {

@@ -173,53 +173,50 @@ class _ConfirmedState extends State<Confirmed> {
   final DBref = FirebaseDatabase.instance.reference();
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
+  var _firebaseRef = FirebaseDatabase().reference();
   bool ans = false;
-
-  void readData() {
-
-    //FirebaseDatabase.instance.reference().child('complaints').child(widget.id).
-
-
-    var ref = FirebaseDatabase.instance
-        .reference()
-        .child('complaints' + widget.id)
-        .onChildChanged
-        .listen((val) {
-      ans = true;
-      setState(() {});
-    });
-  }
-
+  Map data;
+  String title = 'Results';
+final textStyle=TextStyle(fontSize: 15,fontWeight: FontWeight.w400);
   @override
   void initState() {
     super.initState();
-    readData();
-    //  complaint = Complaints("", "", "", "");
-
-//     databaseReference.onChildAdded.listen(onDataAdded);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Result'),
-      ),
-      body: ans == false
-          ? Container(
-              width: 200,
-              height: 200,
-              child: Text(
-                'Your Alert is under review',
-                style: GoogleFonts.lato(fontSize: 20),
-              ))
-          : Container(
-              width: 200,
-              height: 200,
-              child: Text(
-                'Your Alert have accepted till ',
-                style: GoogleFonts.lato(fontSize: 20),
-              )),
-    );
+    return StreamBuilder<Event>(
+        stream: _firebaseRef.child('complaints/' + widget.id).onValue,
+        //databaseReference.child('location/').onValue,
+        builder: (BuildContext context, AsyncSnapshot<Event> event) {
+          if (event.hasData) {
+            data = event.data.snapshot.value;
+            if (data != null) {
+              print('Data : $data\n\n');
+            }
+            if (data['alertIssued'] != 'false')
+              return Scaffold(
+                  appBar: AppBar(
+                    title: Text('$title'),
+                    backgroundColor: Color(0xff028090),
+                  ),
+                  body: Center(
+                      child: Container(
+                          child: Text('Your request has been Accepted',style:textStyle ,))));
+            else
+              return Scaffold(
+                  appBar: AppBar(
+                    title: Text('$title'),
+                    backgroundColor: Color(0xff028090),
+                  ),
+                  body: Center(child: Text('Your request is in under Review',style:textStyle)));
+          } else
+            return Scaffold(
+                appBar: AppBar(
+                  title: Text('$title'),
+                  backgroundColor: Color(0xff028090),
+                ),
+                body: Center(child: Text('Your request is in under Review',style:textStyle)));
+        });
   }
 }

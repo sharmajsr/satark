@@ -300,6 +300,18 @@ class _RoadAccidentState extends State<RoadAccident> {
                     '$areaType4',
                     '$areaType5'
                   ];
+                  String location = '';
+                  if ('${widget.address}'
+                      .contains('neighbourhood'))
+                    location = widget.address['neighbourhood'];
+                  else if ('${widget.address}'.contains('road'))
+                    location = widget.address['road'];
+                  else if ('${widget.address}'.contains('county'))
+                    location = widget.address['county'];
+                  else if ('${widget.address}'.contains('city'))
+                    location = widget.address['city'];
+                  else
+                    location = widget.address['state'];
                   List imList;
 //                 if(areaType1)  l.add('1');
 //                 if(areaType2)  l.add('2');
@@ -310,6 +322,8 @@ class _RoadAccidentState extends State<RoadAccident> {
 //                 if(sUrl1.isNotEmpty) imList.add(sUrl1);
 //                 if(sUrl2.isNotEmpty) imList.add(sUrl2);
                   var id = randomAlphaNumeric(6);
+
+
                   Map data = {
                     "name": "shubham",
                     "sever": "$val",
@@ -336,7 +350,7 @@ class _RoadAccidentState extends State<RoadAccident> {
                   //Messaging.sendToAll(title: 'Fire', body: 'Unverified Fire Alert ');
                   Messaging.sendToTopic(
                       title: 'Road Accident News',
-                      body: 'Unverified Road Accident Alert',
+                      body: 'Unverified Road Accident Alert at $location',
                       topic: 'auth')
                       .then((val) {
                     print('Subscribed to $subscriber');

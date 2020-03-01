@@ -33,6 +33,7 @@ class _AuthorityState extends State<Authority> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Authority'),
+        backgroundColor: Color(0xff028090),
       ),
       body: FirebaseAnimatedList(
           defaultChild: shimmers(),
@@ -160,7 +161,8 @@ class _AuthorityState extends State<Authority> {
                     double.parse(data['latitude']),
                     double.parse(data['longitude']),
                     data['address'],
-                  data['type']
+                  data['type'],
+                  data['timestamp']
                 )));
       },
       child: Padding(

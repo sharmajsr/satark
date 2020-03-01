@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:disaster_main/messaging/messaging.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ComplaintDetails extends StatefulWidget {
@@ -18,7 +19,7 @@ class ComplaintDetails extends StatefulWidget {
   double latitude;
   Map address;
   String type;
-
+  String timestamp;
   ComplaintDetails(
       this.name,
       this.severity,
@@ -31,7 +32,7 @@ class ComplaintDetails extends StatefulWidget {
       this.latitude,
       this.longitude,
       this.address,
-      this.type);
+      this.type,this.timestamp);
 
   @override
   _ComplaintDetailsState createState() => _ComplaintDetailsState();
@@ -67,6 +68,8 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 
   static const textStyle = TextStyle(
     fontSize: 16,
+    fontWeight: FontWeight.w500,
+
   );
 
   @override
@@ -98,12 +101,15 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 //                        ),
 //                      ),
                       Text(
-                        'Name : ${widget.name}',
+                        'Name : ${widget.name.toUpperCase()}',
                         style: textStyle,
                       ),
-                      Text(
-                        'Severity : ${widget.severity}',
-                        style: textStyle,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical:9.0),
+                        child: Text(
+                          'Severity : ${widget.severity}',
+                          style: textStyle,
+                        ),
                       ),
                       Text(
                         'People : ${widget.people}',
@@ -115,20 +121,20 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
 //                        style: textStyle,
 //
 //                      ),
-                      Text(
+                      widget.type=='fire'? Text(
                         'AreaType : ${widget.AreaType}',
                         style: textStyle,
-                      ),
-                      Text(
-                        'Latitude : ${widget.latitude}',
-                        style: textStyle,
-                      ),
-                      Text(
-                        'Longitude : ${widget.longitude}',
-                        style: textStyle,
-                      ),
+                      ):Container(),
+//                      Text(
+//                        'Latitude : ${widget.latitude}',
+//                        style: textStyle,
+//                      ),
+//                      Text(
+//                        'Longitude : ${widget.longitude}',
+//                        style: textStyle,
+//                      ),
 
-                      Row(
+                      widget.type=='fire'?Row(
                         children: <Widget>[
                           Container(
                             height: 90,
@@ -144,7 +150,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                             ),
                           ),
                         ],
-                      ),
+                      ):Container(),
 
                       widget.alertIssued == 'false'
                           ? RaisedButton(
@@ -176,6 +182,7 @@ class _ComplaintDetailsState extends State<ComplaintDetails> {
                                   "id": "${widget.id}",
                                   "latitude": "${widget.latitude}",
                                   "type": "${widget.type}",
+                                  "timestamp":"${widget.timestamp}",
                                   "longitude": "${widget.longitude}",
                                   "address": widget.address
                                 };

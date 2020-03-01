@@ -5,6 +5,7 @@ import 'package:disaster_main/Disasters/map.dart';
 import 'package:disaster_main/MessagePage.dart';
 import 'package:disaster_main/categorySelection.dart';
 import 'package:disaster_main/chart_analytics.dart';
+import 'package:disaster_main/locationTracker.dart';
 import 'package:disaster_main/messaging/message.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -44,12 +45,12 @@ class _DashboardState extends State<Dashboard> {
                     double.parse(notification['longitude']),
                     notification['location'])));
         break;
-      case 'events':
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => Confirmed('33')));
-        break;
+//      case 'events':
+//        Navigator.push(
+//            context,
+//            MaterialPageRoute(
+//                builder: (BuildContext context) => Confirmed('33')));
+//        break;
 //      case 'jobs':
 //        Navigator.push(context,
 //            MaterialPageRoute(builder: (BuildContext context) => JobList()));
@@ -105,6 +106,7 @@ class _DashboardState extends State<Dashboard> {
   List<Widget> _widgetOptions = <Widget>[
     CategorySelection(),
     GraphPage(),
+   // LocationTracker(),
     DashboardMapPage(),
   ];
 
@@ -137,6 +139,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       appBar: AppBar(
         title: Text('Dashboard'),
+        backgroundColor: Color(0xff028090),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
